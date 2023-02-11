@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Components;
 using UtilsIncubator;
 
 
@@ -24,7 +25,7 @@ public partial class Badge : ComponentBase
   }
 
   [Parameter] 
-  public string theme { get; set; } = Badge.StandardThemes.regular.ToString(); // TODO ① 正しく文字列と始末する
+  public string theme { get; set; } = Badge.StandardThemes.regular.ToString();
 
   internal static bool mustConsiderThemesAsExternal = false;
 
@@ -43,7 +44,7 @@ public partial class Badge : ComponentBase
   }
 
   [Parameter]
-  public string geometry { get; set; } = Badge.StandardThemes.regular.ToString(); // TODO ① 正しく文字列と始末する
+  public string geometry { get; set; } = Badge.StandardThemes.regular.ToString();
   
   public enum GeometricModifiers
   {
@@ -72,36 +73,63 @@ public partial class Badge : ComponentBase
     achromaticPastel
   }
 
-  private string[] customDecorativeVariations = Array.Empty<string>();
+  private static object? CustomDecorativeVariations;
 
-  public void defineNewDecorativeVariations(string[] newDecorativeVariations)
+  public static void defineNewDecorativeVariations<TCustomDecorativeVariations>(
+    TCustomDecorativeVariations[] newDecorativeVariations
+  ) where TCustomDecorativeVariations : struct
   {
-    customDecorativeVariations = newDecorativeVariations;
-  } 
+    
+    if (!typeof(TCustomDecorativeVariations).IsEnum)
+    {
+      throw new System.Exception("Enumが待機された");
+    }
+    
+    
+    Badge.CustomDecorativeVariations = newDecorativeVariations;
+    
+  }
+
+  protected string _decoration;
 
   [Parameter]
-  public required string decoration { get; set; }
-  
-  // [Parameter]
-  // public required string decoration
-  // {
-  //   get => _decoration;
-  //   set
-  //   {
-  //
-  //     if (
-  //       !value is StandardDecorativeVariations &&
-  //       !value is CustomDecorativeVariations
-  //     )
-  //     {
-  //       throw new Exception($"修飾的変形{value}は不明");
-  //     }
-  //
-  //
-  //     this._theme = value;
-  //
-  //   }
-  // }
+  public required object decoration
+  {
+    get => _decoration;
+    set
+    {
+
+      if (value is Badge.StandardDecorativeVariations standardDecorativeVariation)
+      {
+        this._decoration = standardDecorativeVariation.ToString();
+        return;
+      }
+
+      
+      throw new Exception($"Invalid decorative variation");
+      
+
+      // if (
+      //   Badge.CustomDecorativeVariations is not null &&
+      //   value is Badge.CustomDecorativeVariations
+      // )
+      // {
+      //   throw new Exception(
+      //   $"The decorative variation must be either one of \"StandardDecorativeVariations\" or custom one "
+      //   );
+      // }
+      //
+      //
+      // if (
+      //   !value is StandardDecorativeVariations &&
+      //   !value is CustomDecorativeVariations
+      // )
+      // {
+      //   throw new Exception($"修飾的変形{value}は不明");
+      // }
+
+    }
+  }
   
   public enum DecorativeModifiers
   {
@@ -124,11 +152,11 @@ public partial class Badge : ComponentBase
       return new List<string>().
           AddElementToEndIf("Badge--YDF__SingleLineMode", _ => this.mustForceSingleLine).
           AddElementToEndIf(
-            $"Badge--YDF__${ this.theme.ToLowerCamelCase() }Theme",
+            $"Badge--YDF__${ this.theme.ToUpperCamelCase() }Theme",
             _ => Enum.GetNames(typeof(Badge.StandardThemes)).Length > 1 && !this.areThemesExternal
           ).
           AddElementToEndIf(
-            $"Badge--YDF__${ this.geometry.ToLowerCamelCase() }Geometry",
+            $"Badge--YDF__${ this.geometry.ToUpperCamelCase() }Geometry",
             _ => Enum.GetNames(typeof(Badge.StandardGeometricVariations)).Length > 1
           ).
           AddElementToEndIf(
@@ -136,7 +164,7 @@ public partial class Badge : ComponentBase
             _ => this.geometricModifiers.Contains(Badge.GeometricModifiers.pillShape)
           ).
           AddElementToEndIf(
-            $"AttentionBox--YDF__${ this.decoration.ToLowerCamelCase() }Decoration",
+            $"Badge--YDF__{ this._decoration.ToUpperCamelCase() }Decoration",
             _ => Enum.GetNames(typeof(Badge.StandardDecorativeVariations)).Length > 1
           ).
           AddElementToEndIf(

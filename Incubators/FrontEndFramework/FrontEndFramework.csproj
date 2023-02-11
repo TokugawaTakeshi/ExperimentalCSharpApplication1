@@ -20,7 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Controls\Buttons\Plain\LoadingPlaceholder" />
+    <AdditionalFiles Include="Components\Controls\Buttons\Plain\Button.razor" />
+    <AdditionalFiles Include="Components\Controls\Buttons\Plain\LoadingPlaceholder\ButtonLoadingPlaceholder.razor" />
   </ItemGroup>
 
 </Project>

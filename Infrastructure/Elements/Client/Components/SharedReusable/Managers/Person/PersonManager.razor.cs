@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using FrontEndFramework.Mixins;
+using Microsoft.AspNetCore.Components;
 
 
 namespace Client.Components.SharedReusable.Managers.Person;
 
 
-public partial class PersonManager : ComponentBase
+public partial class PersonManager : ComponentBase, IAcceptsSpaceSeparatedAdditionalCSS_Classes
 {
 
-  [Parameter]
-  public string SpaceSeparatedAdditionalCSS_Classes { get; set; }
+  /* IAcceptsSpaceSeparatedAdditionalCSS_Classesから継承されたはず */
+  // [Parameter]
+  // public string spaceSeparatedAdditionalCSS_Classes { get; set; }
   
 }

@@ -4,19 +4,19 @@
 public abstract class Badge
 {
 
-  enum Themes
+  public enum Themes
   {
     redmond,
     sunny,
     overcast
   }
 
-  enum GeometricVariations
+  public enum GeometricVariations
   {
     miniature
   }
 
-  enum DecorativeVariations
+  public enum DecorativeVariations
   {
     flatGradient,
     glossyGradient
