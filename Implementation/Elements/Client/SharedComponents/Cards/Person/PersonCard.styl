@@ -1,0 +1,285 @@
+.PersonCard
+
+  AVATAR_HEIGHT = 64px
+  
+  display flex
+  column-gap 12px
+  
+  border-radius 4px
+  padding 12px 8px
+
+  background white
+  box-shadow 0 0 3px 1px alpha(black, 0.25)
+  outline none
+
+
+  &:hover
+
+    box-shadow: 0 0 PersonCard.shadowThickness 2px YDF_ColorPalette.skyBlue.bright
+    transition box-shadow 0.75s
+
+
+  &:focus
+
+    box-shadow: 0 0 PersonCard.shadowThickness 2px YDF_ColorPalette.skyBlue.light
+    transition none
+
+
+  &:active
+
+    box-shadow: 0 0 PersonCard.shadowThickness 2px YDF_ColorPalette.skyBlue.mediumDark
+    transition none
+    
+
+  &__LoadingPlaceholder
+
+    pointer-events none
+
+
+  &-Avatar
+  
+    width 64px
+    aspect-ratio 1/1
+    border-radius 50%
+
+    background-color: YDF_ColorPalette.skyBlue.pastelSlightlyLight
+    
+    flex-shrink 0
+    align-self center
+
+
+    +addLoadingPlaceholderModifierClass()
+    
+      border-color initial
+
+    
+  &-AvatarPlaceholder
+
+    display flex
+    justify-content center
+    align-items center
+
+    height AVATAR_HEIGHT
+    aspect-ratio 1/1
+    border-radius 50%
+    
+    background-color: YDF_ColorPalette.skyBlue.pastelSlightlyLight
+    
+    flex-shrink 0
+    align-self center
+    
+    
+    &-Icon
+
+      height 42px
+      
+      fill: ShadesOfGray__39ColorsW3C_Palette[24]
+    
+    
+  &-Metadata
+  
+    spacings = {
+      afterOfficialNameRow: 4px,
+      afterNameSpellRow: 8px,
+      afterEmailRow: 6px
+    }
+    
+    ICONS_AND_LABELS_COLOR = ShadesOfGray__39ColorsW3C_Palette[16]
+    
+    display grid
+    grid-template-columns auto minmax(0, 1fr)
+    column-gap 8px
+    align-items center
+    
+    flex-grow 1
+    align-self flex-start 
+    
+    
+    &-Key
+
+      FONT_SIZE = 14px
+      
+      display flex
+      align-items center
+      column-gap 6px
+
+      font-size FONT_SIZE
+      
+      
+      &__VisuallyHidden
+
+        width 0
+        height 0
+        overflow hidden
+        
+        position absolute
+        
+        
+      &__Email
+
+        margin-top: spacings.afterNameSpellRow
+        
+        
+      &__Phone
+
+        margin-top: spacings.afterEmailRow
+
+
+      &-Icon
+
+        width 16px
+        
+        flex-shrink 0
+        
+        fill: ICONS_AND_LABELS_COLOR
+        
+        
+      &-Label
+
+        color: ICONS_AND_LABELS_COLOR
+        
+        
+      &--LoadingPlaceholder
+
+        LoadingPlaceholder({
+          width: 60px,
+          height: FONT_SIZE,
+          borderRadius: 4px
+        })
+        
+        
+        &__Email
+        
+          margin-top: spacings.afterNameSpellRow
+        
+        
+        &__Phone
+        
+          margin-top: spacings.afterEmailRow
+        
+        
+        
+    &-Value
+
+      fontSizes = {
+        regular: 14px,   
+        officialName: 18px,
+        officialNameSpell: 12px
+      }
+      
+      
+      &__OfficialName
+
+        applyTextGeometryWithoutExtraSpaceCausedByLineHeight({
+          fontSize: fontSizes.officialName,
+          lineSpacing: 4px,
+          mustAllowWordsBreakingAnywhere: true
+        })
+
+        color: ShadesOfGray__39ColorsW3C_Palette[12]
+        
+        grid-column 1 / -1
+        
+        
+      &__OfficialNameSpell
+
+        applyTextGeometryWithoutExtraSpaceCausedByLineHeight({
+          fontSize: fontSizes.officialNameSpell,
+          lineSpacing: 4px,
+          mustAllowWordsBreakingAnywhere: true
+        })
+        
+        color: ShadesOfGray__39ColorsW3C_Palette[20]
+
+        grid-column 1 / -1
+        margin-top: spacings.afterOfficialNameRow
+        
+
+      &__Email
+
+        applyTextGeometryWithoutExtraSpaceCausedByLineHeight({
+          fontSize: fontSizes.regular,
+          lineSpacing: 4px,
+          mustAllowWordsBreakingAnywhere: true
+        })
+        
+        margin-top: spacings.afterNameSpellRow
+        
+
+      &__Phone
+
+        applyTextGeometryWithoutExtraSpaceCausedByLineHeight({
+          fontSize: fontSizes.regular,
+          lineSpacing: 4px,
+          mustAllowWordsBreakingAnywhere: true
+        })
+        
+        margin-top: spacings.afterEmailRow
+        
+        
+      &--LoadingPlaceholder
+
+        &-OfficialName
+
+          LoadingPlaceholder({
+            width: 40%,
+            height: fontSizes.officialName,
+            borderRadius: 4px
+          })
+          
+          grid-column 1 / -1
+          
+        
+        &-OfficialNameSpell
+
+          LoadingPlaceholder({
+            width: 80%,
+            height: fontSizes.officialNameSpell,
+            borderRadius: 4px
+          })
+
+          grid-column 1 / -1
+          margin-top: spacings.afterOfficialNameRow
+          
+          
+        &-Email
+
+          LoadingPlaceholder({
+            width: 100%,
+            height: fontSizes.regular,
+            borderRadius: 4px
+          })
+          
+          margin-top: spacings.afterNameSpellRow
+          
+          
+        &-Phone
+
+          LoadingPlaceholder({
+            width: 90%,
+            height: fontSizes.regular,
+            borderRadius: 4px
+          })
+          
+          margin-top: spacings.afterEmailRow
+
+
+  &-Link
+
+    text-decoration underline
+    color: YDF_ColorPalette.deepSkyBlue.slightlyDark
+      
+      
+    &:hover
+      
+      color: YDF_ColorPalette.deepSkyBlue.bright
+
+      
+    &:focus
+
+      color: YDF_ColorPalette.deepYellow.slightlyDark
+      
+      
+    &:active
+
+      color: YDF_ColorPalette.deepSkyBlue.mediumLight

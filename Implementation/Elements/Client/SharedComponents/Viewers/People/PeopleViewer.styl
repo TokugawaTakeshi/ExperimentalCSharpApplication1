@@ -1,0 +1,111 @@
+.PeopleViewer
+
+  WIDE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH = 600px
+
+  WideContainersConfiguration()
+    @media container and (min-width: WIDE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH)
+      {block}
+
+  NarrowContainersConfiguration()
+    @media container and (max-width: WIDE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH - 1)
+      {block}
+  
+  
+  display flex
+  flex-direction column
+  container-type inline-size
+  
+  
+  &-TopActionBar
+  
+    display flex
+    align-items center
+    
+    column-gap 8px
+        
+    flex-shrink 0
+    z-index: YDF_Configuration.zIndexes.lowermostLayer + 1  /* 影が正しく表示されるのに必要 */
+    
+    
+    +NarrowContainersConfiguration()
+    
+      padding 6px
+    
+      box-shadow 0 2px 6px 0 rgba(black, 0.25)
+    
+    
+    &-SearchBox
+
+      flex-grow 1
+      
+      
+    &-ButtonForWideContainers
+
+      +WideContainersConfiguration()
+      
+        flex-shrink 0
+      
+      
+      +NarrowContainersConfiguration()
+
+        display none !important
+    
+  
+  &-CardsFlow
+  
+    display grid
+    grid-template-columns repeat(auto-fit, minmax(280px, 1fr))
+    row-gap 12px
+    align-content start
+
+    overflow-y auto
+
+    flex-grow 1
+
+
+    +WideContainersConfiguration()
+
+      column-gap 12px
+
+      provideClippedShadowsAndOutlinesVisibility({
+        requiredHorizontalSymmetricSpace: PersonCard.shadowThickness,
+        requiredVerticalSymmetricSpace: PersonCard.shadowThickness
+      })
+    
+      margin-top 6px
+    
+
+    +NarrowContainersConfiguration()
+    
+      padding: PersonCard.shadowThickness + 2px
+
+
+  &-AdmonitionBlock
+    
+    centerHorizontallyWithoutWrapper({ 
+      targetElementType: HorizontalCenteringWithoutWrapper.TargetElementTypes.block,
+      maximalWidth: 2*NARROWEST_SCREEN_WIDTH_UNIT,
+      horizontalSpaceBetweenSelfAndParent: 20px 
+    })
+
+    margin-top 24px
+    margin-bottom 36px
+
+  
+  &-BottomActionBarForNarrowContainers
+
+    +WideContainersConfiguration()
+
+      display none
+    
+    
+    +NarrowContainersConfiguration()
+    
+      display flex
+      flex-direction row-reverse
+
+      padding 6px
+      box-shadow 0 -2px 6px 0 rgba(black, 0.25)
+    
+      flex-grow 0
+      margin-top 6px

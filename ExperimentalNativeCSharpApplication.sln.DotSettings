@@ -1,0 +1,41 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/QuickList/=D7EC079A413E934BB1D3FC50986A8B50/Entry/=0A438713A013D04EB45E7E152CABF417/Position/@EntryValue">11</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/QuickList/=D7EC079A413E934BB1D3FC50986A8B50/Entry/=13941D0239FA44408839839201D48B75/Position/@EntryValue">9</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/QuickList/=D7EC079A413E934BB1D3FC50986A8B50/Entry/=351BA6153E92284286130D81387D6C78/Position/@EntryValue">8</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/QuickList/=D7EC079A413E934BB1D3FC50986A8B50/Entry/=6C7E59EBC599B446ADC9EEF651393098/Position/@EntryValue">6</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/QuickList/=D7EC079A413E934BB1D3FC50986A8B50/Entry/=8D47A3AE0A67E346A5AF06E4C62D9FDF/Position/@EntryValue">10</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/QuickList/=D7EC079A413E934BB1D3FC50986A8B50/Entry/=A53B089D0C73F84D86B0861923F5B1AC/Position/@EntryValue">7</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/QuickList/=D7EC079A413E934BB1D3FC50986A8B50/Entry/=B79E002F8A764400A95062D202834A17/Position/@EntryValue">5</s:Int64>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=000F9328D163EF499108D49218DF0568/Field/=model/Expression/@EntryValue">guessExpectedType("")</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B17B4E21544CEF49A7789FA0D519E596/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B17B4E21544CEF49A7789FA0D519E596/CustomProperties/=Extension/@EntryIndexedValue">razor</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B17B4E21544CEF49A7789FA0D519E596/Description/@EntryValue">SVG Icon</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B17B4E21544CEF49A7789FA0D519E596/Field/=viewBoxAttributeValue/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B17B4E21544CEF49A7789FA0D519E596/Field/=viewBoxAttributeValue/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B17B4E21544CEF49A7789FA0D519E596/Field/=VIEW_005FBOX_005FATTRIBUTE_005FVALUE/@KeyIndexDefined">False</s:Boolean>
+	
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B17B4E21544CEF49A7789FA0D519E596/Text/@EntryValue">&lt;svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="$viewBoxAttributeValue$"
+  class=@spaceSeparatedAdditionalCSS_Classes
+&gt;
+  &lt;path d=""&gt;&lt;/path&gt;    
+&lt;/svg&gt;
+
+
+@code {
+
+  [Parameter] public string? spaceSeparatedAdditionalCSS_Classes { get; set; }
+
+}</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B17B4E21544CEF49A7789FA0D519E596/UITag/@EntryValue">Blazor Component</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=E2B06C390DA4A840A62FD276B59088C5/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=E2B06C390DA4A840A62FD276B59088C5/Applicability/=File/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=E2B06C390DA4A840A62FD276B59088C5/CustomProperties/=Extension/@EntryIndexedValue">razor</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=E2B06C390DA4A840A62FD276B59088C5/CustomProperties/=FileName/@EntryIndexedValue">Icon</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=E2B06C390DA4A840A62FD276B59088C5/CustomProperties/=ValidateFileName/@EntryIndexedValue">True</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=E2B06C390DA4A840A62FD276B59088C5/Description/@EntryValue">SVG Icon</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=E2B06C390DA4A840A62FD276B59088C5/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=E2B06C390DA4A840A62FD276B59088C5/Scope/=E7047CD1B5305A4B9D671D74E0E052CD/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=E2B06C390DA4A840A62FD276B59088C5/Scope/=E7047CD1B5305A4B9D671D74E0E052CD/Type/@EntryValue">InAnyRazorProject</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=E2B06C390DA4A840A62FD276B59088C5/UITag/@EntryValue">Blazor Component</s:String></wpf:ResourceDictionary>

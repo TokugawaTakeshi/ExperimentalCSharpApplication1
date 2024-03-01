@@ -1,0 +1,77 @@
+mixin TasksFilteringPanel
+
+  .TasksFilteringPanel&attributes(attributes)
+
+    .TasksFilteringPanel-Title Summary
+
+    ul.TasksFilteringPanel-List
+
+      li.TasksFilteringPanel-List-Item
+        //- [ CSS Class Test ] .TasksFilteringPanel-List-Item-Button__SelectedState
+        button.TasksFilteringPanel-List-Item-Button.TasksFilteringPanel-List-Item-Button__SelectedState(type="button")
+          +Checklist--YDF_Icon.TasksFilteringPanel-List-Item-Icon
+          span.TasksFilteringPanel-List-Item-Label All Tasks
+      
+      li.TasksFilteringPanel-List-Item
+        button.TasksFilteringPanel-List-Item-Button(type="button")
+          +Calendar__Time--YDF_Icon.TasksFilteringPanel-List-Item-Icon
+          span.TasksFilteringPanel-List-Item-Label Date & Time
+          
+      li.TasksFilteringPanel-List-Item
+        button.TasksFilteringPanel-List-Item-Button(type="button")
+          +Calendar--YDF_Icon.TasksFilteringPanel-List-Item-Icon
+          span.TasksFilteringPanel-List-Item-Label Date
+
+      //-
+        li.TasksFilteringPanel-List-Item
+          button.TasksFilteringPanel-List-Item-Button(type="button")
+            +Location__BottomCircle--YDF_Icon.TasksFilteringPanel-List-Item-Icon
+            span.TasksFilteringPanel-List-Item-Label 場所
+  
+        li.TasksFilteringPanel-List-Item
+          button.TasksFilteringPanel-List-Item-Button(type="button")
+            +Calendar__Repeat--YDF_Icon.TasksFilteringPanel-List-Item-Icon
+            span.TasksFilteringPanel-List-Item-Label 定期
+  
+        li.TasksFilteringPanel-List-Item
+          button.TasksFilteringPanel-List-Item-Button(type="button")
+            +Folder__Stationery--YDF_Icon.TasksFilteringPanel-List-Item-Icon
+            span.TasksFilteringPanel-List-Item-Label 計画
+  
+        li.TasksFilteringPanel-List-Item
+          button.TasksFilteringPanel-List-Item-Button(type="button")
+            +Calendar__Date--YDF_Icon.TasksFilteringPanel-List-Item-Icon
+            span.TasksFilteringPanel-List-Item-Label 本日
+  
+        li.TasksFilteringPanel-List-Item
+          button.TasksFilteringPanel-List-Item-Button(type="button")
+            +Person__Clock__Rectangled__Filled--YDF_Icon.TasksFilteringPanel-List-Item-Icon
+            span.TasksFilteringPanel-List-Item-Label 他人に依存
+
+    //-
+      .TasksFilteringPanel-Title カスタム整理
+  
+      ul.TasksFilteringPanel-List
+  
+        li.TasksFilteringPanel-List-Item
+  
+          button.TasksFilteringPanel-List-Item-CollapsingToggle(
+            type="button"
+            aria-label="Collapse"
+          ): +Triangle__Upward__Circled__Filled--YDF_Icon.TasksFilteringPanel-List-Item-CollapsingToggle-Icon
+  
+          a.TasksFilteringPanel-List-Item-Button(href="#")
+            +Folder__Filled--YDF_Icon.TasksFilteringPanel-List-Item-Icon
+            span.TasksFilteringPanel-List-Item-Label カスタム群1
+  
+          ul.TasksFilteringPanel-List
+  
+            li.TasksFilteringPanel-List-Item
+              a.TasksFilteringPanel-List-Item-Button(href="#")
+                +Folder__Filled--YDF_Icon.TasksFilteringPanel-List-Item-Icon
+                span.TasksFilteringPanel-List-Item-Label カスタム群1-1
+  
+            li.TasksFilteringPanel-List-Item
+              a.TasksFilteringPanel-List-Item-Button(href="#")
+                +Folder__Filled--YDF_Icon.TasksFilteringPanel-List-Item-Icon
+                span.TasksFilteringPanel-List-Item-Label カスタム群1-2

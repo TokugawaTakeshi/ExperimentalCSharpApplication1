@@ -1,0 +1,254 @@
+﻿-
+  
+  class PersonManager {
+    
+    static counterForComponentID_Generating = 0;
+    
+    static generateComponentID() {
+      PersonManager.counterForComponentID_Generating++;
+      return `PERSON_MANAGER-${ PersonManager.counterForComponentID_Generating }`;
+    }
+    
+  }
+  
+
+mixin PersonManager(properties, statesSimulations)
+
+  - 
+
+    properties = properties ?? {};
+    statesSimulations = statesSimulations ?? {};
+ 
+    const {
+      targetPerson = null,
+      activationGuidance
+    } = properties;
+ 
+    const {
+      editingMode = false
+    } = statesSimulations;
+    
+    const COMPONENT_ID = PersonManager.generateComponentID();
+    const HEADING_ID = `${ COMPONENT_ID }-Heading`;
+    
+    const viewingMode = !editingMode;
+    
+    
+  .PersonManager&attributes(attributes)
+
+    .PersonManager-Heading(
+      id=HEADING_ID
+    ) 人（連絡先）詳細
+      
+      
+    if !targetPerson && activationGuidance
+      
+      +AdmonitionBlock--YDF({
+        decoration: AdmonitionBlock__YDF.DecorativeVariations.guidance,
+        hasPrependedSVG_Icon: true
+      }).PersonManager-Guidance= activationGuidance
+      
+
+    //- ━━━ 上部アクションバー ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    .PersonManager-ActionBar
+
+      if viewingMode
+      
+        +Button--YDF({
+          disabled: !targetPerson
+        })
+          +Pencil__Filled--YDF_Icon.Button--YDF-SVG_Icon
+          span.Button--YDF-Label 編集
+        
+      +Button--YDF({
+        disabled: !targetPerson
+      })
+        +TrashCan__Filled--YDF_Icon.Button--YDF-SVG_Icon
+        span.Button--YDF-Label 削除
+        
+      if editingMode
+
+        +Button--YDF
+          +MultiplicationSign--YDF_Icon.Button--YDF-SVG_Icon.Button--YDF-SVG_Icon
+          span.Button--YDF-Label 編集中断
+        
+      
+    //- ━━━ 閲覧モード ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    if viewingMode
+      
+      if targetPerson
+      
+        if targetPerson.avatarURI
+          
+          .PersonManager-Avatar(
+            role="img"
+            style=`background-image: url(${ targetPerson.avatarURI });`
+            aria-label=targetPerson.fullName
+          )
+          
+        else
+  
+          case targetPerson.gender
+  
+            when Genders.Male
+              +Person__Male--YDF_Icon.PersonManager-AvatarPlaceholder
+  
+            when Genders.Female
+              +Person__Female--YDF_Icon.PersonManager-AvatarPlaceholder
+  
+            default
+              +Person--YDF_Icon.PersonManager-AvatarPlaceholder
+      
+      dl.PersonManager-Metadata
+      
+        dt 名前
+        dd= targetPerson ? `${ targetPerson.familyName }${ targetPerson.givenName }` : ""
+        
+        dt 名前の読み方
+        dd
+          if targetPerson && targetPerson.fullNameSpell  
+            | #{ targetPerson.fullNameSpell }
+
+        dt 性別
+        dd
+          if targetPerson
+            if targetPerson.gender
+              | #{ targetPerson.gender === Genders.Male ? "男性" : "女性" }
+            else
+              | 不明
+          
+        dt 生年月日
+        dd
+          if targetPerson
+            if targetPerson.birthYear
+              | #{ targetPerson.birthYear }年
+            if targetPerson.birthMonthNumber__numerationFrom1
+              | #{ targetPerson.birthMonthNumber__numerationFrom1 }月
+            if targetPerson.birthDayOfMonth__numerationFrom1
+              | #{ targetPerson.birthDayOfMonth__numerationFrom1 }日
+            if targetPerson.age
+              | （#{ targetPerson.age }歳）
+            
+        dt メールアドレス
+        dd
+          if targetPerson && targetPerson.emailAddress 
+            a(href=buildEmailLinkHrefAttributeValue(targetPerson.emailAddress))= targetPerson.emailAddress
+            
+        dt 電話番号
+        dd
+          if targetPerson && targetPerson.phoneNumber
+            a(
+              href=buildPhoneNumberLinkHrefAttributeValue(targetPerson.phoneNumber__digitsOnly)
+            )= targetPerson.phoneNumber__digitsOnly
+      
+    else
+
+      //- ━━━ 編集モード ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      form.PersonManager-Form(
+        aria-labelledby=HEADING_ID
+      )
+
+        .PersonManager-ScrollableGrid
+        
+          +TextBox--YDF({
+            label: "姓",
+            guidance: "上の名前を**1~255文字内**入力して下さい。",
+            value: targetPerson ? targetPerson.familyName : "",
+            required: true
+          }).PersonManager-Control.PersonManager-Control__Small
+          
+          +TextBox--YDF({
+            label: "名",
+            guidance: "上の名前を**1~255文字内**入力して下さい。",
+            value: targetPerson ? nullToEmptyString(targetPerson.givenName) : ""
+          }).PersonManager-Control.PersonManager-Control__Small
+          
+          +TextBox--YDF({
+            label: "性の読み方",
+            guidance: "上の名前を**1~255文字内**入力して下さい。",
+            value: targetPerson ? nullToEmptyString(targetPerson.familyNameSpell) : "",
+            required: true
+          }).PersonManager-Control.PersonManager-Control__Small
+          
+          +TextBox--YDF({
+            label: "名の読み方",
+            guidance: "上の名前を**1~255文字内**入力して下さい。",
+            value: targetPerson ? nullToEmptyString(targetPerson.givenNameSpell) : "",
+            required: true
+          }).PersonManager-Control.PersonManager-Control__Small
+          
+          +RadioButtonsGroup--YDF({
+            label: "性別",
+            selectingOptions: [
+              { label: "男", value: "MALE", isSelected: true },
+              { label: "女", value: "FEMALE" }
+            ]
+          })
+            
+          +FilesUploader--YDF(
+            {
+              label: "写真",
+              guidance: "写真をアップロードして下さい",
+              noDragAndDropArea: true,
+              maximalFilesCount: 1
+            },
+            {
+              singleImagePreview: true
+            }
+          ).PersonManager-Control.PersonManager-Control__Big
+          
+          fieldset.PersonManager-Fieldset
+          
+            legend 誕生
+            
+            +AdmonitionBlock--YDF({
+              decoration: AdmonitionBlock__YDF.DecorativeVariations.guidance,
+              hasPrependedSVG_Icon: true
+            }).PersonManager-Fieldset-Guidance 誕生日の知らせを受けるには、月日の指定は十分だが、年齢を算出するには生年の指定が必要。
+  
+            +TextBox--YDF({
+              label: "年",
+              HTML_Type: TextBox__YDF.HTML_Types.number,
+              value: targetPerson ? nullToEmptyString(targetPerson.birthYear) : "",
+              required: true
+            }).PersonManager-Fieldset-TextBox
+            
+            +TextBox--YDF({
+              label: "月",
+              HTML_Type: TextBox__YDF.HTML_Types.number,
+              value: targetPerson ? nullToEmptyString(targetPerson.birthMonthNumber__numerationFrom1) : "",
+              required: true
+            }).PersonManager-Fieldset-TextBox
+            
+            +TextBox--YDF({
+              label: "日",
+              HTML_Type: TextBox__YDF.HTML_Types.number,
+              value: targetPerson ? nullToEmptyString(targetPerson.birthDayOfMonth__numerationFrom1) : "",
+              required: true
+            }).PersonManager-Fieldset-TextBox
+            
+          +TextBox--YDF({
+            label: "メール",
+            HTML_Type: TextBox__YDF.HTML_Types.emailAddress,
+            value: targetPerson ? nullToEmptyString(targetPerson.emailAddress) : ""
+          }).PersonManager-Control.PersonManager-Control__Big
+  
+          +TextBox--YDF({
+            label: "電話",
+            HTML_Type: TextBox__YDF.HTML_Types.phoneNumber__digitsOnly,
+            value: targetPerson ? nullToEmptyString(targetPerson.phoneNumber__digitsOnly) : ""
+          }).PersonManager-Control.PersonManager-Control__Big
+      
+        
+        .PersonManager-ActionBar
+    
+          +Button--YDF({
+            HTML_Type: Button__YDF.HTML_Types.submit,
+            decoration: Button__YDF.DecorativeVariations.accented
+          })
+            +FloppyDisk--YDF_Icon.Button--YDF-SVG_Icon
+            span.Button--YDF-Label 保存
+          
+          +Button--YDF
+            +MultiplicationSign--YDF_Icon.Button--YDF-SVG_Icon
+            span.Button--YDF-Label 編集を止める

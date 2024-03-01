@@ -1,0 +1,134 @@
+@using Person = CommonSolution.Entities.Person
+
+@using Client.SharedState
+
+@using Client.SharedComponents.Cards.Person.LoadingPlaceholder
+@using Client.SharedComponents.Cards.Person
+
+@using YamatoDaiwa.Frontend.Components.AdmonitionBlock
+@using FrontEndFramework.Components.Controls.Buttons.Plain
+@using FrontEndFramework.Components.Controls.SearchBox
+@using FrontEndFramework.SVG_Icons.Person
+
+
+<div class="PeopleViewer @spaceSeparatedAdditionalCSS_Classes">
+
+  <div class="PeopleViewer-TopActionBar">
+  
+    <SearchBox
+      placeholder="名義や名前の読み方で検索"
+      accessibilityGuidance="名義や名前の読み方で検索"
+      mustSynchronizeDisplayingSearchRequestWith=@PeopleSharedState.searchingByFullOrPartialNameOrItsSpell
+      onNewSearchRequest=@onNewPersonSearchingRequestByFullOrPartialNameOrItsSpellHasBeenEmitted
+      disabled=@mustDisableSearchBox
+      spaceSeparatedAdditionalCSS_Classes="PeopleViewer-TopActionBar-SearchBox"
+    />
+    
+    <Button
+      label="新規連絡先追加"
+      onClick=@onClickPersonAddingButton
+      spaceSeparatedAdditionalCSS_Classes="PeopleViewer-TopActionBar-ButtonForWideContainers"
+    >
+      <PrependedSVG_Icon>
+        <PersonIcon__Plus rootElementModifierCSS_Class="Button--YDF-SVG_Icon" />  
+      </PrependedSVG_Icon>
+    </Button>
+    
+  </div>
+  
+  
+  @if (PeopleSharedState.isPeopleRetrievingInProgressOrNotStartedYet)
+  {
+    <div class="PeopleViewer-CardsFlow">
+      @for (uint cardNumber = 0; cardNumber < 12; cardNumber++)
+      {
+        <PersonCardLoadingPlaceholder/>
+      }
+    </div>  
+  }
+  
+  else if (PeopleSharedState.hasPeopleSelectionRetrievingErrorOccurred)
+  {
+    <AdmonitionBlock
+      decoration=@AdmonitionBlock.StandardDecorativeVariations.error
+      hasPrependedSVG_Icon
+      rootElementModifierCSS_Class="TasksManager-AdmonitionBlock"
+    >
+
+      <p>情報取得中不具合が発生しました。</p>
+      
+      <Button
+        label="再試験"
+        onClick=@onClickPeopleSelectionRetrievingRetryingButton
+        spaceSeparatedAdditionalCSS_Classes="AdmonitionBlock--YDF-CenteredButton"
+      />
+      
+    </AdmonitionBlock>
+  }
+  
+  else if (PeopleSharedState.totalPeopleCountInDataSource == 0)
+  {
+    <AdmonitionBlock
+      decoration=@AdmonitionBlock.StandardDecorativeVariations.guidance
+      hasPrependedSVG_Icon
+      rootElementModifierCSS_Class="TasksManager-AdmonitionBlock"
+    >
+
+      <p>現在、人が一件も登録させていません。</p>
+      
+      <Button
+        label="早速登録しましょう"
+        onClick=@onClickPersonAddingButton
+        spaceSeparatedAdditionalCSS_Classes="AdmonitionBlock--YDF-CenteredButton"
+      />
+      
+    </AdmonitionBlock>
+  }
+  
+  else if (PeopleSharedState.totalPeopleCountInSelection == 0)
+  {
+    <AdmonitionBlock
+      decoration=@AdmonitionBlock.StandardDecorativeVariations.guidance
+      hasPrependedSVG_Icon
+      rootElementModifierCSS_Class="TasksManager-AdmonitionBlock"
+    >
+
+      <p>検索結果と合っている件はありません。</p>
+      
+      <Button
+        label="検索条件をリセット"
+        onClick=@onClickFilteringResettingButton
+        spaceSeparatedAdditionalCSS_Classes="AdmonitionBlock--YDF-CenteredButton"
+      />
+      
+    </AdmonitionBlock>
+  }
+  
+  else
+  {
+    <ul class="PeopleViewer-CardsFlow">
+      @foreach (Person person in PeopleSharedState.peopleSelection)
+      {
+        <PersonCard 
+          targetPerson=@person
+          rootElementTag="li"
+          onClick=@onSelectPerson
+        />
+      }
+    </ul>
+  }
+  
+  <div class="PeopleViewer-BottomActionBarForNarrowContainers">
+
+    <Button
+      label="新規連絡先追加"
+      onClick=@onClickPersonAddingButton
+    >
+      <PrependedSVG_Icon>
+        <PersonIcon__Plus rootElementModifierCSS_Class="Button--YDF-SVG_Icon" />  
+      </PrependedSVG_Icon>
+    </Button>
+  
+  </div>
+  
+</div>

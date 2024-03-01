@@ -10,7 +10,7 @@ internal class FrontServerDependencies {
 
   public struct Gateways {
     public required IPersonGateway Person { get; init; }
-    public required ITaskGateway Task { get; init; }
+    public required TaskGateway Task { get; init; }
   }
   
   public abstract class Injector {

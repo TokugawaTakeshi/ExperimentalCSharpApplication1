@@ -7,6 +7,7 @@
     disabled=@disabled
     @onclick:preventDefault
     @onclick=@onClick
+    @ref=@rootElement
   >
     
     @if (PrependedSVG_Icon is not null)
@@ -41,5 +42,6 @@ else if (isInputTheTagNameOfRootElement)
     disabled=@disabled
     @onclick:preventDefault
     @onclick=@onClick
+    @ref=@rootElement
   />  
 }

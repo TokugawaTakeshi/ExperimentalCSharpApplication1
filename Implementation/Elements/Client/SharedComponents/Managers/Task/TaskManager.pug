@@ -1,0 +1,123 @@
+﻿-
+
+  class TaskManager {
+
+    static counterForComponentID_Generating = 0;
+
+    static generateComponentID() {
+      TaskManager.counterForComponentID_Generating++;
+      return `TASK_MANAGER-${ TaskManager.counterForComponentID_Generating }`;
+    }
+
+  }
+
+
+mixin TaskManager(properties, statesSimulations)
+
+  -
+
+    properties = properties ?? {};
+    statesSimulations = statesSimulations ?? {};
+
+    const {
+      targetTask = null,
+      activationGuidance
+    } = properties;
+
+    const {
+      editingMode = false
+    } = statesSimulations;
+
+    const COMPONENT_ID = TaskManager.generateComponentID();
+    const HEADING_ID = `${ COMPONENT_ID }-HEADING`;
+
+    const viewingMode = !editingMode;
+
+
+  .TaskManager&attributes(attributes)
+
+    .TaskManager-Header
+    
+      .TaskManager-Heading(
+        id=HEADING_ID
+      ) Task Manager
+
+      +ClosingButton--YDF.TaskManager-ClosingButtonForNarrowScreens
+
+    if !targetTask && activationGuidance
+
+      +AdmonitionBlock--YDF({
+        decoration: AdmonitionBlock__YDF.DecorativeVariations.guidance,
+        hasPrependedSVG_Icon: true
+      }).TaskManager-Guidance= activationGuidance
+
+
+    //- ━━━ Top action bar ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    .TaskManager-ActionBar
+
+      if viewingMode
+
+        +Button--YDF({
+          disabled: !targetTask
+        })
+          +Checklist__Editing--YDF_Icon.Button--YDF-SVG_Icon
+          span.Button--YDF-Label Edit task
+
+      +Button--YDF({
+        disabled: !targetTask
+      })
+        +Checklist__Deleting--YDF_Icon.Button--YDF-SVG_Icon
+        span.Button--YDF-Label Delete task
+        
+      if editingMode
+
+        +Button--YDF
+          +MultiplicationSign--YDF_Icon.Button--YDF-SVG_Icon.Button--YDF-SVG_Icon
+          span.Button--YDF-Label Cancel editing
+    
+    //- ━━━ Viewing mode ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    if viewingMode
+
+      dl.TaskManager-Metadata
+
+        dt Title
+        dd= targetTask ? targetTask.title : ""
+
+        if targetTask && targetTask.description
+          dt Description
+          dd= targetTask.description
+
+    else
+
+      //- ━━━ Editing mode ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      form.TaskManager-Form(
+        aria-labelledby=HEADING_ID
+      )
+
+        +TextBox--YDF({
+          label: "Title",
+          guidance: "Please input **1~25** characters.",
+          value: targetTask ? targetTask.title : ""
+        }).TaskManager-Control
+        
+        +TextBox--YDF({
+          label: "Description",
+          guidance: "Please input **at least 1** character.",
+          multiline: true,
+          value: targetTask ? nullToEmptyString(targetTask.description) : ""
+        }).TaskManager-Control
+
+        .TaskManager-ActionBar
+
+          +Button--YDF({
+            HTML_Type: Button__YDF.HTML_Types.submit,
+            decoration: Button__YDF.DecorativeVariations.accented
+          })
+            +FloppyDisk--YDF_Icon.Button--YDF-SVG_Icon
+            span.Button--YDF-Label Save task
+          
+          +Button--YDF
+            +MultiplicationSign--YDF_Icon.Button--YDF-SVG_Icon
+            span.Button--YDF-Label Cancel editing
+
+        //- +HighDummy

@@ -1,0 +1,75 @@
+mixin PersonCard(properties)
+
+  -
+
+    const {
+      person,
+      rootElementTag = "div"
+    } = properties;
+    
+    if (rootElementTag === "a") {
+      throw new Error(
+        "The \"a\" could not be the root element of \"PersonCard\" component because it has the internal links while " +
+          "the nested links are not allowed by HTML5 standard."
+      )
+    }
+    
+    const fullName = `${ person.familyName }${ person.givenName ?? "" }`
+
+
+  #{rootElementTag}.PersonCard&attributes(attributes)(
+    tabindex="0"
+  )
+
+    if person.avatarURI
+    
+      img.PersonCard-Avatar(
+        src=person.avatarURI
+        alt=`${ fullName }という人物の写真又は画像`
+      )
+    
+    else
+
+      .PersonCard-AvatarPlaceholder
+      
+        case person.gender
+          
+          when Genders.Male
+            +Person__Male--YDF_Icon.PersonCard-AvatarPlaceholder-Icon
+            
+          when Genders.Female
+            +Person__Female--YDF_Icon.PersonCard-AvatarPlaceholder-Icon
+            
+          default
+            +Person--YDF_Icon.PersonCard-AvatarPlaceholder-Icon
+    
+    dl.PersonCard-Metadata
+    
+      dt.PersonCard-Metadata-Key.PersonCard-Metadata-Key__VisuallyHidden 名前
+      dd.PersonCard-Metadata-Value.PersonCard-Metadata-Value__OfficialName= fullName
+      
+      if person.familyNameSpell || person.givenNameSpell
+        dt.PersonCard-Metadata-Key.PersonCard-Metadata-Key__VisuallyHidden 名前の読み方
+        dd.PersonCard-Metadata-Value.PersonCard-Metadata-Value__OfficialNameSpell
+          | #{ nullToEmptyString(person.familyNameSpell) }#{ nullToEmptyString(person.givenNameSpell) }
+      
+      if person.emailAddress
+        dt.PersonCard-Metadata-Key.PersonCard-Metadata-Key__Email
+          +Mail__Filled--YDF_Icon.PersonCard-Metadata-Key-Icon
+          span.PersonCard-Metadata-Key-Label メール
+        dd.PersonCard-Metadata-Value.PersonCard-Metadata-Value__Email
+          a.PersonCard-Link(
+            href=buildEmailLinkHrefAttributeValue(person.emailAddress)
+          )= person.emailAddress
+        
+      if person.phoneNumber__digitsOnly
+        dt.PersonCard-Metadata-Key.PersonCard-Metadata-Key__Phone
+          +Phone__Filled--YDF_Icon.PersonCard-Metadata-Key-Icon
+          span.PersonCard-Metadata-Key-Label 電話
+        dd.PersonCard-Metadata-Value.PersonCard-Metadata-Value__Phone
+          a.PersonCard-Link(
+            href=buildPhoneNumberLinkHrefAttributeValue(person.phoneNumber__digitsOnly)
+          )= formatJapanesePhoneNumber(person.phoneNumber__digitsOnly)
+
+      
+include LoadingPlaceholder/PersonCardLoadingPlaceholder.pug

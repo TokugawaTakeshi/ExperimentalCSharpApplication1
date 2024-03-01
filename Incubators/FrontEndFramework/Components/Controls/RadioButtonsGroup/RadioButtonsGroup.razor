@@ -1,0 +1,40 @@
+﻿@using YamatoDaiwa.Frontend.Components.Controls.CompoundControlShell
+
+
+@inherits FrontEndFramework.Components.Controls.InputtableControl
+
+
+<CompoundControlShell
+  spaceSeparatedAdditionalCSS_Classes="@string.Concat("TextBox--YDF ", rootElementModifierCSS_Classes, " ", spaceSeparatedAdditionalCSS_Classes)"
+  label=@label
+  guidance=@guidance
+  required=@required
+  mustDisplayAppropriateBadgeIfInputIsRequired=@mustDisplayAppropriateBadgeIfInputIsRequired
+  mustDisplayAppropriateBadgeIfInputIsOptional=@mustDisplayAppropriateBadgeIfInputIsOptional
+  mustAddInvisibleBadgeForHeightEqualizingWhenNoBadge=@mustAddInvisibleBadgeForHeightEqualizingWhenNoBadge
+  labelElementHTML_ID=@labelElementHTML_ID
+  validationErrorsMessages=@payload.ValidationErrorsMessages
+  invalidInputHighlightingIfAnyValidationErrorsMessages=@mustHighlightInvalidInputIfAnyValidationErrorsMessages
+>
+ 
+  <div 
+    class="RadioButtonsGroup--YDF-Flow"
+    role="radiogroup"
+    aria-label=@accessibilityGuidance
+    aria-labelledby=@(labelElementHTML_ID ?? externalLabelHTML_ID)
+    aria-disabled=@disabled
+  >
+    
+    @foreach (SelectingOption selectingOption in selectingOptions)
+    {
+      <RadioButton 
+        label=@selectingOption.label
+        HTML_Name=@radioButtonsHTML_Name
+        HTML_Value=@selectingOption.key
+        checked=@(selectingOption.key == currentlySelectedOption?.key)
+      />  
+    }
+    
+  </div>
+  
+</CompoundControlShell>

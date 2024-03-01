@@ -1,0 +1,101 @@
+@using CommonSolution.Fundamentals
+
+@using YamatoDaiwa.Frontend.Components.Abstractions
+@using FrontEndFramework.Helpers
+@using FrontEndFramework.SVG_Icons.Person
+@using FrontEndFramework.SVG_Icons.Mail
+@using FrontEndFramework.SVG_Icons.Phone
+
+@using YamatoDaiwa.CSharpExtensions.OfficialLocalizations.Japanese
+
+
+<DynamicTag
+  name=@rootElementTag
+  attributes=@(
+    new Dictionary<string, object> {
+      { "class", $"PersonCard { ((ISupportsExternalCSS_ClassesForRootElement)this).rootElementSpaceSeparatedExternalCSS_Classes }" },
+      { "tabindex", "0" },
+      /* 【 理論 】 キャストが無いと、警告
+       * 「CS8974: メソッド グループ 'onClickOutermostElement' を非デリゲート型 'object' に変換中です。このメソッドを呼び出すつもりでしたか?」
+       * が発生する。 */
+      { "onclick", (object)this.onClickOutermostElement }
+    }
+  )
+>
+  
+  @if (targetPerson.avatarURI is not null)
+  {
+    <img 
+      class="PersonCard-Avatar"
+      src=@targetPerson.avatarURI 
+      alt=@($"{ targetPerson.fullName }という人物の写真又は画像")
+    />  
+  }
+  else
+  {
+    <div class="PersonCard-AvatarPlaceholder">
+      @switch (targetPerson.gender)
+      {
+        
+        case Genders.Male:
+        
+          <PersonIcon__Male rootElementModifierCSS_Class="PersonCard-AvatarPlaceholder-Icon"/>
+          break;
+          
+        case Genders.Female:
+        
+          <PersonIcon__Female rootElementModifierCSS_Class="PersonCard-AvatarPlaceholder-Icon"/>
+          break;
+          
+        default:
+          
+          <PersonIcon rootElementModifierCSS_Class="PersonCard-AvatarPlaceholder-Icon"/>
+          break;
+        
+      }
+    </div>
+  }
+  
+  <dl class="PersonCard-Metadata">
+    
+    <dt class="PersonCard-Metadata-Key PersonCard-Metadata-Key__VisuallyHidden">氏名</dt>
+    <dd class="PersonCard-Metadata-Value PersonCard-Metadata-Value__OfficialName">@targetPerson.fullName</dd>
+    
+    <dt class="PersonCard-Metadata-Key PersonCard-Metadata-Key__VisuallyHidden">名前の読み方</dt>
+    <dd class="PersonCard-Metadata-Value PersonCard-Metadata-Value__OfficialNameSpell">@(targetPerson.fullNameSpell)</dd>
+    
+    @if (targetPerson.emailAddress is not null)
+    {
+      <dt class="PersonCard-Metadata-Key PersonCard-Metadata-Key__Email">
+        <MailIcon__Filled rootElementModifierCSS_Class="PersonCard-Metadata-Key-Icon" />
+        <span class="PersonCard-Metadata-Key-Label">メール</span>
+      </dt>
+      <dd class="PersonCard-Metadata-Value PersonCard-Metadata-Value__Email">
+        <a
+          class="PersonCard-Link"
+          href=@(AnchorElementHelper.BuildEmailLinkHrefAttributeValue(targetPerson.emailAddress))
+        >
+          @targetPerson.emailAddress  
+        </a>
+      </dd>
+    }
+
+    @if (targetPerson.phoneNumber__digitsOnly is not null)
+    {
+      <dt class="PersonCard-Metadata-Key PersonCard-Metadata-Key__Phone">
+        <PhoneIcon__Filled rootElementModifierCSS_Class="PersonCard-Metadata-Key-Icon" />
+        <span class="PersonCard-Metadata-Key-Label">電話</span>
+      </dt>
+      <dd class="PersonCard-Metadata-Value PersonCard-Metadata-Value__Phone">
+        <a
+          class="PersonCard-Link"
+          href=@(AnchorElementHelper.BuildPhoneNumberLinkHrefAttributeValue(targetPerson.phoneNumber__digitsOnly))
+        >
+          @(JapanesePhoneNumber.Format(targetPerson.phoneNumber__digitsOnly))
+        </a>
+      </dd>
+    }
+    
+  </dl>
+  
+</DynamicTag>

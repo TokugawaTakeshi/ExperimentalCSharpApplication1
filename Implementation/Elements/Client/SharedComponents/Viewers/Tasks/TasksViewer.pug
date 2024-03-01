@@ -1,0 +1,98 @@
+﻿mixin TasksViewer(statesSimulations)
+
+  -
+    /**
+     * @type {object}
+     * @property {boolean} loading
+     * @property {boolean} error
+     * @property {boolean} noItems
+     * @property {boolean} noSearchResults
+     */  
+    statesSimulations = statesSimulations ?? {}
+ 
+  .TasksViewer&attributes(attributes)
+    
+    //- [ Extra container adding reason ] Usage of container queries
+    .TasksViewer-VariableComposition
+    
+      +TasksFilteringPanel.TasksViewer-Sidebar
+        
+      .TasksViewer-TopActionBar
+  
+        +SearchBox--YDF({
+          placeholder: "Search by Title or Description"
+        }).TasksViewer-TopActionBar-SearchBox
+  
+        +Button--YDF.TasksViewer-TopActionBar-ButtonForWideContainers
+          +Checklist__Adding--YDF_Icon.Button--YDF-SVG_Icon
+          span.Button--YDF-Label Add Task
+        
+      if statesSimulations.loading
+  
+        .TasksViewer-CardsFlow
+  
+          each cardNumber in Array.from(new Array(12).keys())
+  
+            +TaskCardLoadingPlaceholder
+  
+      else if statesSimulations.error
+  
+        +AdmonitionBlock--YDF({
+          title: "Tasks Retrieving Failure",
+          decoration: AdmonitionBlock__YDF.DecorativeVariations.error,
+          hasPrependedSVG_Icon: true
+        }).TasksViewer-AdmonitionBlock
+  
+          p The tasks selection retrieving has failed.
+  
+          +Button--YDF({
+            label: "Retry to Retrieve"
+          }).AdmonitionBlock--YDF-CenteredButton
+  
+      else if statesSimulations.noItems
+  
+        +AdmonitionBlock--YDF({
+          decoration: AdmonitionBlock__YDF.DecorativeVariations.guidance,
+          hasPrependedSVG_Icon: true
+        }).TasksViewer-AdmonitionBlock
+  
+          p No tasks has been added yet.
+  
+          +Button--YDF({
+            label: "Let add first one",
+            decoration: Button__YDF.DecorativeVariations.accented
+          }).AdmonitionBlock--YDF-CenteredButton
+  
+      else if statesSimulations.noSearchResults
+  
+        +AdmonitionBlock--YDF({
+          decoration: AdmonitionBlock__YDF.DecorativeVariations.guidance,
+          hasPrependedSVG_Icon: true
+        }).TasksViewer-AdmonitionBlock
+  
+          p No tasks matching with filtering conditions.
+  
+          +Button--YDF({
+            label: "Reset Filtering",
+          }).AdmonitionBlock--YDF-CenteredButton
+  
+      else
+
+        ul.TasksViewer-CardsFlow
+  
+          each task in DummyData.Tasks
+  
+            +TaskCard({
+              task,
+              rootElementTag: "li"
+            })
+              
+      .TasksViewer-BottomActionBarForNarrowContainers
+  
+        +Button--YDF
+          +Checklist__Adding--YDF_Icon.Button--YDF-SVG_Icon
+          span.Button--YDF-Label Add Task
+          
+        +Button--YDF
+          +Filtering__Outlined--YDF_Icon.Button--YDF-SVG_Icon
+          span.Button--YDF-Label Filter Tasks

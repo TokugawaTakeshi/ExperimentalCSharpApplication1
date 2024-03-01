@@ -14,6 +14,22 @@ block Requirements
         return MainLayout;
       }
       
+      
+      static mustDisplaySnackbar = false;
+
+      static displaySnackbar() {
+        MainLayout.mustDisplaySnackbar = true;
+        return MainLayout;
+      }
+      
+      
+      static mustDisplayBlockingLoadingOverlay = false;
+
+      static displayBlockingLoadingOverlay() {
+        MainLayout.mustDisplaySnackbar = true;
+        return MainLayout;
+      }
+      
     }
   
 
@@ -23,20 +39,41 @@ block append PageContent
 
     .MainLayout-UpperFixedContentSlot
 
-      +Header
+      +Header({ hamburgerMenuButtonAdditionalCSS_Class: "MainLayout-HamburgerMenuButton" })
 
-      block UpperFixedContentSlot
+      block UpperFixedContent
 
+        
     .MainLayout-Sidebar
 
       +NavigationMenu
 
+      
     main.MainLayout-SpecificContent
 
       block SpecificContent
 
+
     if MainLayout.mustDisplayDrawer
 
       .MainLayout-DrawerOverlay
+        
         .MainLayout-Drawer
           +NavigationMenu
+
+        +ClosingButton--YDF.MainLayout-ClosingDrawerButton
+
+    if MainLayout.mustDisplaySnackbar
+      
+      +Snackbar--YDF({
+        text: "大変申し訳ございません、不具合が発生しました。",
+        decoration: Snackbar__YDF.DecorativeVariations.error
+      })
+
+    if MainLayout.mustDisplayBlockingLoadingOverlay
+      
+      +BlockingLoadingOverlay--YDF({
+        loadingIndicatorType: LoadingIndicator__YDF.Types.variableWidthArcSpinner
+      })
+
+    block FloatingAndFixedContent

@@ -1,0 +1,13 @@
+﻿@using YamatoDaiwa.Frontend.Components.LoadingIndicator
+
+
+@if (BlockingLoadingOverlayService.isBlockingLoadingOverlayDisplaying)
+{
+  <div class="BlockingLoadingOverlay--YDF">
+
+    <LoadingIndicator
+      type=@BlockingLoadingOverlayService.loadingIndicatorType
+    />
+  
+  </div>  
+}

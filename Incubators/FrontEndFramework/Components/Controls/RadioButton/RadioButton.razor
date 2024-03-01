@@ -1,0 +1,26 @@
+﻿<div class="RadioButton--YDF @rootElementModifierSpaceSeparatedCSS_Classes @spaceSeparatedAdditionalCSS_Classes">
+  
+  <span class="RadioButton--YDF-Ring"></span>
+  
+  @if (label is not null)
+  {
+    <label 
+      class="RadioButton--YDF-Label"
+      for=@INPUT_ELEMENT_HTML_ID
+    >
+      @(label)
+    </label>  
+  }
+
+  <input
+    class="RadioButton--YDF-HiddenInputElement"
+    type="radio" 
+    name=@HTML_Name
+    value=@HTML_Value
+    checked=@(@checked)
+    disabled=@disabled
+    readonly=@(@readonly)
+    id=@INPUT_ELEMENT_HTML_ID
+  >
+  
+</div>

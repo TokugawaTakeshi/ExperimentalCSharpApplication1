@@ -1,69 +1,68 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Task = CommonSolution.Entities.Task;
-using CommonSolution.Gateways;
-using Microsoft.AspNetCore.Mvc;
+﻿using CommonSolution.Gateways;
+using ClientAndFrontServer;
 
 
 namespace FrontServer.Controllers;
 
 
-[Route("api/tasks")]
-[ApiController]
-public class TaskController : ControllerBase
+[Microsoft.AspNetCore.Mvc.ApiController]
+public class TaskController : Microsoft.AspNetCore.Mvc.ControllerBase
 {
 
-  private readonly ITaskGateway taskGateway = FrontServerDependencies.Injector.gateways().Task;
+  private readonly TaskGateway taskGateway = FrontServerDependencies.Injector.gateways().Task;
 
   
-  /* === 取得 ======================================================================================================== */
-  [HttpGet("all")]
-  public async System.Threading.Tasks.Task<ActionResult<Task[]>> retrieveAllTasks()
+  /* ━━━ Retrieving ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  [Microsoft.AspNetCore.Mvc.HttpGet(TasksTransactions.RetrievingOfAll.URN_PATH)]
+  public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<Task[]>> retrieveAllTasks()
   {
-    
     return base.Ok(await this.taskGateway.RetrieveAll());
   }
   
-  /* --- 標本 -------------------------------------------------------------------------------------------------------- */
-  [HttpGet("selection")]
-  public async System.Threading.Tasks.Task<ActionResult<ITaskGateway.SelectionRetrieving.ResponseData>> Get(
-    [FromQuery(Name="pagination_page_number")] [Required] uint paginationPageNumber,
-    [FromQuery(Name="items_count_per_pagination_page")] [Required] uint itemsCountPerPaginationPage,
-    [FromQuery(Name="searching_by_full_or_partial_title")] string? searchingByFullOrPartialTitle
+  [Microsoft.AspNetCore.Mvc.HttpGet(TasksTransactions.RetrievingOfSelection.URN_PATH)]
+  public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<TaskGateway.SelectionRetrieving.ResponseData>> Get(
+    [Microsoft.AspNetCore.Mvc.FromQuery(Name="only_tasks_with_associated_date")] bool onlyTasksWithAssociatedDate,
+    [Microsoft.AspNetCore.Mvc.FromQuery(Name="only_tasks_with_associated_date_time")] bool onlyTasksWithAssociatedDateTime,
+    [Microsoft.AspNetCore.Mvc.FromQuery(Name="searching_by_full_or_partial_title")] string? searchingByFullOrPartialTitle
   ) {
     return base.Ok(
       await this.taskGateway.RetrieveSelection(
-        new ITaskGateway.SelectionRetrieving.RequestParameters
-        {
-          PaginationPageNumber = paginationPageNumber,
-          ItemsCountPerPaginationPage = itemsCountPerPaginationPage,
-          SearchingByFullOrPartialTitle = searchingByFullOrPartialTitle
-        })
+      new TaskGateway.SelectionRetrieving.RequestParameters
+      {
+        OnlyTasksWithAssociatedDate = onlyTasksWithAssociatedDate,
+        OnlyTasksWithAssociatedDateTime = onlyTasksWithAssociatedDateTime,
+        SearchingByFullOrPartialTitleOrDescription = searchingByFullOrPartialTitle
+      }
+    ));
+    
+  }
+  
+  
+  /* ━━━ Adding ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  [Microsoft.AspNetCore.Mvc.HttpPost(TasksTransactions.Adding.URN_PATH)]
+  public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<CommonSolution.Entities.Task>> Add(
+    [Microsoft.AspNetCore.Mvc.FromBody] TaskGateway.Adding.RequestData requestData
+  ) {
+    return base.Ok(
+      await this.taskGateway.Add(requestData)
     );
   }
   
-   
-  /* === 追加 ======================================================================================================== */
-  [HttpPost]
-  public async System.Threading.Tasks.Task<ActionResult<ITaskGateway.Adding.ResponseData>> Add(
-    [FromBody] ITaskGateway.Adding.RequestData requestData
+  
+  /* ━━━ Updating ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  [Microsoft.AspNetCore.Mvc.HttpPut(TasksTransactions.Updating.URN_PATH)]
+  public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult> Update(
+    [Microsoft.AspNetCore.Mvc.FromBody] TaskGateway.Updating.RequestData requestData
   ) {
-    return base.Ok(await this.taskGateway.Add(requestData));
+    return base.Ok(
+      await this.taskGateway.Update(requestData)
+    );
   }
 
   
-  /* === 更新 ======================================================================================================= */
-  [HttpPut]
-  public async System.Threading.Tasks.Task<ActionResult> Update(
-    [FromBody] ITaskGateway.Updating.RequestData requestData
-  ) {
-    await this.taskGateway.Update(requestData);
-    return base.Ok();
-  }
-  
-  
-  /* === 削除 ======================================================================================================= */
-  [HttpDelete("(id)")]
-  public async System.Threading.Tasks.Task<ActionResult> Delete(string targetTaskID) {
+  /* ━━━ Deleting ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  [Microsoft.AspNetCore.Mvc.HttpDelete(TasksTransactions.Deleting.URN_PATH_TEMPLATE)]
+  public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult> Delete(string targetTaskID) {
     await this.taskGateway.Delete(targetTaskID);
     return base.Ok();
   }

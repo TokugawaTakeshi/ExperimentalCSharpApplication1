@@ -1,0 +1,27 @@
+﻿@using FrontEndFramework.Components.ModalDialogs.Common;
+@using FrontEndFramework.Components.Controls.Buttons.Plain;
+
+
+<ModalDialog
+  title=@title 
+  noDismissingButton=@true
+  rootElementModifierCSS_Class="ConfirmationModalDialog--YDF"
+>
+ 
+  <div class="ConfirmationModalDialog--YDF-Question">
+    @(question)
+  </div>
+  
+  <div class="ConfirmationModalDialog--YDF-ActionBar">
+    <Button
+      label=@confirmationButtonLabel
+      decoration=@Button.StandardDecorativeVariations.accented
+      onClick=@onConfirmationButtonClicked
+    />
+    <Button
+      label=@cancellationButtonLabel
+      onClick=@onCancellationButtonClicked
+    />
+  </div>
+  
+</ModalDialog>

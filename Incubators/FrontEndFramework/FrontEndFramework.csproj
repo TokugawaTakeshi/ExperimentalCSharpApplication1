@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -12,7 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
+    <PackageReference Include="YamatoDaiwaCS_Extensions" Version="0.0.8" />
+    <PackageReference Include="YamatoDaiwaCS_Extensions.Localizations.Japanese" Version="0.0.4" />
+    <PackageReference Include="YamatoDaiwaFrontend" Version="0.0.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,11 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="Components\AttentionBox\AttentionBox.razor" />
     <AdditionalFiles Include="Components\Controls\Buttons\Plain\Button.razor" />
     <AdditionalFiles Include="Components\Controls\Buttons\Plain\LoadingPlaceholder\ButtonLoadingPlaceholder.razor" />
+    <AdditionalFiles Include="Components\Controls\RadioButton\RadioButton.razor" />
+    <AdditionalFiles Include="Components\Controls\SearchBox\SearchBox.razor" />
     <AdditionalFiles Include="Components\Controls\TextBox\TextBox.razor" />
-    <AdditionalFiles Include="Components\Controls\TextBox\TextBoxLoadingPlaceholder.razor" />
+    <AdditionalFiles Include="Components\Controls\FilesUploader\FilesUploader.razor" />
     <AdditionalFiles Include="SVG_Icons\Calendar\CalendarIcon__Date.razor" />
     <AdditionalFiles Include="SVG_Icons\Calendar\CalendarIcon__Time.razor" />
     <AdditionalFiles Include="SVG_Icons\Checkbox\CheckboxIcon__Checked.razor" />
@@ -33,6 +37,13 @@
     <AdditionalFiles Include="SVG_Icons\Lists\ChecklistIcon.razor" />
     <AdditionalFiles Include="SVG_Icons\MultiplicationSign\MultiplicationSignIcon__Boxed__Filled.razor" />
     <AdditionalFiles Include="SVG_Icons\Timeline\TimelineIcon.razor" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Package">
+      <HintPath>C:\Users\Takeshi Tokugawa\.nuget\packages\yamatodaiwafrontend\0.0.2\lib\net8.0\Package.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

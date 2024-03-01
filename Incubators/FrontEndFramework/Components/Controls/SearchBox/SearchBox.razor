@@ -1,0 +1,52 @@
+﻿@using FrontEndFramework.Components.Controls.Buttons.Plain
+@using FrontEndFramework.SVG_Icons.MultiplicationSign
+@using FrontEndFramework.SVG_Icons.MagnifyingGlass
+
+
+<div 
+  class="SearchBox--YDF @rootElementModifierSpaceSeparatedClasses @spaceSeparatedAdditionalCSS_Classes"
+  role="search"
+>
+  
+  <input 
+    class="SearchBox--YDF-InputElement"
+    type="text"
+    placeholder=@placeholder
+    disabled=@disabled
+    aria-description=@accessibilityGuidance
+    value=@inputtedSearchRequest
+    @oninput=@onInputToInputElement
+    @onkeydown=@onPressKeyDuringInputElementFocusedIn
+  />
+  
+  <Button
+    label="リセット"
+    onClick=@resetSearchRequest
+    disabled=@disabled
+  >
+    <PrependedSVG_Icon>
+      <MultiplicationSignIcon__Octagoned__Filled rootElementModifierCSS_Class="Button--YDF-SVG_Icon"/>
+    </PrependedSVG_Icon>
+  </Button>
+  
+  <Button
+    label="検索"
+    disabled=@disabled
+    onClick=@submitSearchRequest
+    @ref=searchingRequestEmittingButton
+  >
+    <PrependedSVG_Icon>
+      <MagnifyingGlassIcon rootElementModifierCSS_Class="Button--YDF-SVG_Icon"/>
+    </PrependedSVG_Icon> 
+  </Button>
+  
+  @if (isTooltipDisplaying)
+  {
+    <div class="SearchBox--YDF-Tooltip">
+      検索するには
+      <span class="SearchBox--YDF-Tooltip-AccentedFragment">最少@(minimalCharactersCountForSearchRequest)文字</span>
+      を入力して下さい。
+    </div>  
+  }
+  
+</div>

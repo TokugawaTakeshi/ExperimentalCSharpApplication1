@@ -1,0 +1,99 @@
+﻿@using FrontEndFramework.Components.Controls.Buttons.Plain
+@using YamatoDaiwa.Frontend.Components.Controls.CompoundControlShell
+@using FrontEndFramework.SVG_Icons.File
+
+
+@inherits FrontEndFramework.Components.Controls.InputtableControl
+
+
+<CompoundControlShell
+  spaceSeparatedAdditionalCSS_Classes="@string.Concat("FilesUploader--YDF ", rootElementModifierCSS_Classes, " ", spaceSeparatedAdditionalCSS_Classes)"
+  label=@label
+  guidance=@guidance
+  required=@required
+  mustDisplayAppropriateBadgeIfInputIsRequired=@mustDisplayAppropriateBadgeIfInputIsRequired
+  mustDisplayAppropriateBadgeIfInputIsOptional=@mustDisplayAppropriateBadgeIfInputIsOptional
+  mustAddInvisibleBadgeForHeightEqualizingWhenNoBadge=@mustAddInvisibleBadgeForHeightEqualizingWhenNoBadge
+  coreElementHTML_ID=@INPUT_ELEMENT_HTML_ID
+  labelElementHTML_ID=@labelElementHTML_ID
+  validationErrorsMessages=@payload.ValidationErrorsMessages
+  invalidInputHighlightingIfAnyValidationErrorsMessages="mustHighlightInvalidInputIfAnyValidationErrorsMessages"
+>
+  
+  @if (!noButton)
+  {
+    <Button
+      spaceSeparatedAdditionalCSS_Classes="FilesUploader--YDF-FilePickingButton"
+      label="ファイルを選択"
+      onClick=@onClickFilesPickingButton
+      @ref=@filesPickingButton
+    >
+      <PrependedSVG_Icon>
+        <FileAddingIcon rootElementModifierCSS_Class="Button--YDF-SVG_Icon" />  
+      </PrependedSVG_Icon>
+    </Button>
+  }
+  
+  @if (!noDragAndDropArea)
+  {
+    <div 
+      class="FilesUploader--YDF-DragAndDropArea"
+      tabindex="0"
+    >
+      <FileAddingIcon rootElementModifierCSS_Class="FilesUploader--YDF-Icon" />
+      <p class="FilesUploader--YDF-Guidance">ここにファイルをドラッグ＆ドロップ</p>
+    </div>  
+  }
+  
+  @if (payload.Value is string)
+  {
+    <div class="FilesUploader--YDF-SingleImagePreviewer">
+      <img 
+        class="FilesUploader--YDF-SingleImagePreview"
+        src=@payload.Value 
+        alt="The preview of image which will be uploaded"
+      />
+    </div>  
+  }
+  
+  @if (payload.Value is List<string> imagesURIs)
+  {
+    <ul
+      class="FilesUploader--YDF-ImagesPreviewFlow"
+      aria-label="Images preview"
+    >
+      @foreach (string imageURI in imagesURIs)
+      {
+        <li class="FilesUploader--YDF-PreviewCard">
+          
+          <div class="FilesUploader--YDF-PreviewCard-SizingAndDefaultBackgroundProvidingWrapper">
+            <img
+              class="FilesUploader--YDF-PreviewCard-Image"
+              src=@imageURI
+              alt="Image preview"
+            />
+          </div>
+          
+          <Button
+            spaceSeparatedAdditionalCSS_Classes="FilesUploader--YDF-PreviewCard-Button"
+            label="削除"
+            onClick=@onClickDeleteFileButton
+          />
+          
+        </li>      
+      }
+
+    </ul> 
+  }
+    
+  <input 
+    class="FilesUploader--YDF-HiddenInputElement"
+    type="file" 
+    multiple=@(maximalFilesCount == 1)
+    required=@required
+    aria-label=@accessibilityGuidance
+    aria-labelledby=@externalLabelHTML_ID
+    id=@INPUT_ELEMENT_HTML_ID
+  >
+  
+</CompoundControlShell>

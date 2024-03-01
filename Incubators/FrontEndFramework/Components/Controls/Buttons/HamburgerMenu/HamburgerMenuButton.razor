@@ -1,0 +1,15 @@
+﻿@using FrontEndFramework.SVG_Icons.HamburgerMenu;
+
+<button 
+  class=@($"HamburgerMenuButton--YDF { spaceSeparatedAdditionalCSS_Classes }") 
+  type="button"
+  @onclick=@onClick
+>
+  
+  <HamburgerMenuIcon 
+    rootElementModifierCSS_Class="HamburgerMenuButton--YDF-Icon"
+  />
+  
+  <span class="HamburgerMenuButton--YDF-Label">MENU</span>  
+  
+</button>

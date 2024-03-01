@@ -1,0 +1,158 @@
+﻿.PersonManager
+
+  display flex
+  flex-direction column
+  
+  
+  &-Heading
+
+    applyTextGeometryWithoutExtraSpaceCausedByLineHeight({
+      fontSize: 24px,
+      lineSpacing: 4px
+    })
+    
+    flex-shrink 0
+    
+    
+  &-Guidance
+
+    margin-top 12px
+    
+    flex-shrink 0
+  
+
+  &-ActionBar
+
+    display flex
+    flex-direction row-reverse
+    column-gap 8px
+
+    flex-shrink 0
+    retireFrom({ definitions: (".PersonManager-Heading" { y: 10px }) (".PersonManager-Guidance" { y: 8px }) })
+
+
+  &-Avatar 
+  
+    aspect-ratio 1/1
+    
+    background-size cover
+    background-position center
+    background-repeat no-repeat
+
+    margin-top 8px
+    
+    
+  &-AvatarPlaceholder
+
+    max-height 100px
+    
+    fill: ShadesOfGray__39ColorsW3C_Palette[24]
+    
+    margin-top 16px
+
+
+  &-Metadata
+  
+    display grid
+    grid-template-columns auto minmax(0, 1fr)
+    gap 12px 8px
+
+    overflow-y auto
+    
+    margin-top 10px
+    
+    
+    dt
+
+      text-align right
+      
+      font-weight bold
+      color: ShadesOfGray__39ColorsW3C_Palette[16]
+      
+      
+    dd
+
+      applyTextGeometryWithoutExtraSpaceCausedByLineHeight({
+        fontSize: 14px,
+        lineSpacing: 4px,
+        mustAllowWordsBreakingAnywhere: true
+      }) 
+      
+      
+      a
+
+        text-decoration underline
+        color: YDF_ColorPalette.deepSkyBlue.slightlyDark
+    
+    
+        &:hover
+    
+          color: YDF_ColorPalette.deepSkyBlue.bright
+    
+    
+        &:focus
+    
+          color: YDF_ColorPalette.deepYellow.slightlyDark
+    
+    
+        &:active
+    
+          color: YDF_ColorPalette.deepSkyBlue.mediumLight
+
+
+  &-Form
+
+    display flex
+    flex-direction column
+
+    margin-top 16px
+    pushTargetFromSelf({ targetElementSelector: ".PersonManager-ActionBar", y: 12px })
+    
+    overflow hidden
+    
+    
+    .PersonManager-ActionBar
+
+      margin-top 12px
+
+
+  &-ScrollableGrid
+    
+    display grid
+    grid-template-columns repeat(2, minmax(0, 1fr))
+    gap 12px 8px
+
+    overflow-y auto
+
+
+  &-Control
+
+    &__Big
+      
+      grid-column 1 / -1
+
+      
+  &-Fieldset
+
+    grid-column 1 / -1
+    
+    display grid
+    grid-template-columns repeat(3, minmax(0, 1fr))
+    column-gap 6px
+    
+    
+    legend
+      
+      grid-column 1 / -1
+      
+      
+    &-Guidance
+
+      grid-column 1 / -1
+      margin-top 8px
+      
+      
+    &-TextBox
+      
+      min-width 0
+      margin-top 12px

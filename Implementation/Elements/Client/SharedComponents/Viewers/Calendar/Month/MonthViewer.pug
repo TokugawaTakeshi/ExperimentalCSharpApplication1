@@ -1,0 +1,163 @@
+﻿mixin MonthViewer(properties, statesSimulations)
+
+  - 
+
+    properties = properties ?? {} // TODO 必須プロパティが有る場合削除
+    statesSimulations = statesSimulations ?? {} // TODO 必須シミュレーションが有る場合削除
+ 
+    const {
+    
+    } = properties
+ 
+    const {
+    
+    } = statesSimulations
+    
+    
+  table.MonthViewer&attributes(attributes)
+
+    thead
+      tr
+        th.MonthViewer-DayTitleCell.MonthViewer-DayTitleCell__Holiday(scope="col") 日
+        th.MonthViewer-DayTitleCell(scope="col") 月
+        th.MonthViewer-DayTitleCell(scope="col") 火
+        th.MonthViewer-DayTitleCell(scope="col") 水
+        th.MonthViewer-DayTitleCell(scope="col") 木
+        th.MonthViewer-DayTitleCell(scope="col") 金
+        th.MonthViewer-DayTitleCell.MonthViewer-DayTitleCell__Holiday(scope="col") 土
+
+    tbody
+
+      -
+
+        const weekRowsData = twoDimensionalizeArray({
+          targetFlatArray: CalendarBuilder.generateDataFor42DaysMatrix({
+            targetYear: 2023,
+            targetMonthNumber__numerationFrom1: 1
+          }),
+          elementsCountPerNestedArray: 7
+        });
+
+      each weekRowData in weekRowsData
+
+        tr
+          each dayCellData in weekRowData
+            
+            //- 【 理論 】 tdには「container-type」を適応しても効果無いので、「container queries」機能を使うには新規包みを追加せざる得ない。
+            td.MonthViewer-DayCell: .MonthViewer-DayCell-ContainerQueryProvider
+
+              span.MonthViewer-DayCell-Title= dayCellData.dayOfMonth
+
+              -
+
+                const hasOneOrMoreTasksAssociatedWithTime = getRandomBoolean();
+                const hasOneOrMoreTasksAssociatedWithDate = getRandomBoolean();
+                const hasOneOrMoreDocumentsAssociatedWithDate = getRandomBoolean();
+
+                const ITEMS_RELATED_WIDTH_TIME_TITLE_HTML_ID = `ITEMS_RELATED_WIDTH_TIME--TITLE-${ year }` +
+                    `${ dayCellData.month__numerationFrom1 }-${ dayCellData.dayOfMonth }`
+                const ITEMS_RELATED_WIDTH_DATE_TITLE_HTML_ID = `ITEMS_RELATED_WIDTH_DATE--TITLE-${ year }` +
+                    `${ dayCellData.month__numerationFrom1 }-${ dayCellData.dayOfMonth }`
+                const DOCUMENTA_RELATED_WIDTH_DATE_TITLE_HTML_ID = `DOCUMENTS_RELATED_WIDTH_DATE--TITLE-${ year }` +
+                    `${ dayCellData.month__numerationFrom1 }-${ dayCellData.dayOfMonth }`
+  
+  
+              .MonthViewer-DayCell-ScrollViewForLargeContainers
+
+                if hasOneOrMoreTasksAssociatedWithTime
+
+                  .MonthViewer-DayCell-ScrollViewForLargeContainers-Title(
+                    id=ITEMS_RELATED_WIDTH_TIME_TITLE_HTML_ID
+                  ) 日を特定した情報 
+
+                  ul.MonthViewer-DayCell-ScrollViewForLargeContainers-List(
+                    aria-labelledby=ITEMS_RELATED_WIDTH_TIME_TITLE_HTML_ID
+                    class="MonthViewer-DayCell-ScrollViewForLargeContainers-List__ActionAssociatedWithSpecificTime"
+                  )
+                    each index in Array.from(new Array(5).keys())
+                      li.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Item
+                        .MonthViewer-DayCell-ScrollViewForLargeContainers-List-IconDecorativeWrapper
+                          +Calendar__Time--YDF_Icon.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Icon(
+                            aria-label="日を特定した情報"
+                          )
+                        span.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Label
+                          | #{ index === 3 ? textOverflowSafetyTest : `会議${ index + 1 }` }
+                
+                if hasOneOrMoreTasksAssociatedWithTime
+                  
+                  .MonthViewer-DayCell-ScrollViewForLargeContainers-Title(
+                    id=ITEMS_RELATED_WIDTH_DATE_TITLE_HTML_ID
+                  ) 日が特定された行動 
+
+                  ul.MonthViewer-DayCell-ScrollViewForLargeContainers-List(
+                    aria-labelledby=ITEMS_RELATED_WIDTH_DATE_TITLE_HTML_ID
+                    class="MonthViewer-DayCell-ScrollViewForLargeContainers-List__ActionAssociatedWithSpecificDate"
+                  )
+                    each index in Array.from(new Array(5).keys())
+                      li.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Item
+                        .MonthViewer-DayCell-ScrollViewForLargeContainers-List-IconDecorativeWrapper
+                          +Calendar__Date--YDF_Icon.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Icon(
+                            aria-label="日が特定された行動"
+                          )
+                        span.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Label
+                          | #{ index === 3 ? textOverflowSafetyTest : `買い物${ index + 1 }` }
+                      
+                if hasOneOrMoreDocumentsAssociatedWithDate
+
+                  .MonthViewer-DayCell-ScrollViewForLargeContainers-Title(
+                    id=DOCUMENTA_RELATED_WIDTH_DATE_TITLE_HTML_ID
+                  ) 日を特定した情報 
+
+                  ul.MonthViewer-DayCell-ScrollViewForLargeContainers-List(
+                    aria-labelledby=DOCUMENTA_RELATED_WIDTH_DATE_TITLE_HTML_ID
+                    class="MonthViewer-DayCell-ScrollViewForLargeContainers-List__DocumentsAssociatedWithSpecificTime"
+                  )
+                    each index in Array.from(new Array(5).keys())
+                      li.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Item
+                        .MonthViewer-DayCell-ScrollViewForLargeContainers-List-IconDecorativeWrapper
+                          +Folder__Stationery--YDF_Icon.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Icon(
+                            aria-label="日を特定した情報"
+                          )
+                        span.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Label
+                          | #{ index === 3 ? textOverflowSafetyTest : `資料${ index + 1 }` }
+                      
+                    //- === TODO =======================================================================================
+                    //-
+
+                      span.MonthViewer-DayCell-ButtonForSmallContainers-Icon 日付関連
+
+                //-
+                  if hasOneOrMoreTasksAssociatedWithDate
+
+                    .MonthViewer-DayCell-ButtonForSmallContainers-TitleWithIconGroup
+                      +Calendar__Time--YDF_Icon.MonthViewer-DayCell-ButtonForSmallContainers-Icon
+                      span.MonthViewer-DayCell-ButtonForSmallContainers-Icon 日時関連
+
+                  if hasOneOrMoreDocumentsAssociatedWithDate
+
+                    .MonthViewer-DayCell-ButtonForSmallContainers-TitleWithIconGroup
+                      +Folder__Stationery--YDF_Icon.MonthViewer-DayCell-ButtonForSmallContainers-Icon
+                      span.MonthViewer-DayCell-ButtonForSmallContainers-Icon 関連資料
+
+              //-
+                button.MonthViewer-DayCell-ButtonForSmallContainers(
+                  type="button"
+                )
+  
+                  if hasOneOrMoreTasksAssociatedWithTime
+  
+                    +Calendar__Date--YDF_Icon.MonthViewer-DayCell-ButtonForSmallContainers-Icon(
+                      aria-label="日が特定された行動"
+                    )
+  
+                  if hasOneOrMoreTasksAssociatedWithDate
+  
+                    +Calendar__Time--YDF_Icon.MonthViewer-DayCell-ButtonForSmallContainers-Icon(
+                      aria-label="時が特定された行動"
+                    )
+  
+                  if hasOneOrMoreDocumentsAssociatedWithDate
+  
+                    +Folder__Stationery--YDF_Icon.MonthViewer-DayCell-ButtonForSmallContainers-Icon(
+                      aria-label="日を特定した情報"
+                    )

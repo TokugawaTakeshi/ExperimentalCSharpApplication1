@@ -1,0 +1,77 @@
+﻿@using YamatoDaiwa.Frontend.Components.Badge
+@using FrontEndFramework.SVG_Icons.Checkbox
+@using FrontEndFramework.SVG_Icons.Calendar
+@using FrontEndFramework.Helpers
+
+
+<DynamicTag
+  name=@rootElementTag
+  attributes=@(
+    new Dictionary<string, object> {
+      { "class", composeClassAttributeValueForRootElement("TaskCard") },
+      { "tabindex", "0" },
+      { "onclick", (object)this.onClickRootElement }
+    }
+  )
+>
+
+  <span
+    class="TaskCard-Checkbox"
+    role="checkbox"
+    tabindex="0"
+    aria-checked=@targetTask.isComplete
+    @onclick:stopPropagation
+    @onclick=@onClickCheckbox
+  >
+
+    @if (targetTask.isComplete)
+    {
+      <CheckboxIcon__Checked rootElementModifierCSS_Class="TaskCard-Checkbox-Icon" />
+    }
+    else
+    {
+      <CheckboxIcon__Unchecked rootElementModifierCSS_Class="TaskCard-Checkbox-Icon" />
+    }
+
+  </span>
+
+  <div class="TaskCard-Title">@targetTask.title</div>
+
+  @if (hasAtLeastOneBadge)
+  {
+    <div class="TaskCard-BadgesFlow">
+      
+      @if (dateTimeBadgeLabel is not null)
+      {
+        <Badge
+          key=@localization.badges.dateTime
+          value=@dateTimeBadgeLabel
+          decoration=@YamatoDaiwa.Frontend.Components.Badge.Badge.StandardDecorativeVariations.veryCatchyBright
+        >
+          <PrependedSVG_Icon>
+            <CalendarIcon__Time rootElementModifierCSS_Class="Badge--YDF-SVG_Icon"/>
+          </PrependedSVG_Icon>
+        </Badge>  
+      }
+      
+      @if (dateBadgeLabel is not null)
+      {
+        <Badge
+          key=@localization.badges.date
+          value=@dateBadgeLabel
+          decoration=@YamatoDaiwa.Frontend.Components.Badge.Badge.StandardDecorativeVariations.catchyBright>
+          <PrependedSVG_Icon>
+            <CalendarIcon__Date rootElementModifierCSS_Class="Badge--YDF-SVG_Icon"/>
+          </PrependedSVG_Icon>
+        </Badge>  
+      }
+      
+    </div> 
+  }
+  
+  @if (!String.IsNullOrEmpty(targetTask.description))
+  {
+    <div class="TaskCard-Description">@(targetTask.description)</div>
+  }
+
+</DynamicTag>

@@ -1,7 +1,8 @@
-﻿using Task = CommonSolution.Entities.Task;
+﻿using CommonSolution.Entities;
+using Task = CommonSolution.Entities.Task;
 
 using MockDataSource.Entities;
-using MockDataSource.Utils;
+using YamatoDaiwa.CSharpExtensions.DataMocking;
 
 
 namespace MockDataSource.Collections;
@@ -10,7 +11,13 @@ namespace MockDataSource.Collections;
 internal abstract class TasksCollectionsMocker
 {
 
-  public static IEnumerable<Task> Generate(IEnumerable<Subset> order)
+  public struct Dependencies
+  {
+    internal Location[] Locations { get; init; }
+  }
+  
+  
+  public static IEnumerable<Task> Generate(IEnumerable<Subset> order, Dependencies dependencies)
   {
 
     List<Task> accumulatingCollection = new();
@@ -21,6 +28,7 @@ internal abstract class TasksCollectionsMocker
       {
         accumulatingCollection.Add(TaskMocker.Generate(
           preDefines: null,
+          new TaskMocker.Dependencies { Locations = dependencies.Locations },
           new TaskMocker.Options
           {
             NullablePropertiesDecisionStrategy = subset.NullablePropertiesDecisionStrategy

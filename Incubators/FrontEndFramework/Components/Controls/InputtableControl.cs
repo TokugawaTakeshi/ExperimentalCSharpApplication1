@@ -8,26 +8,38 @@ public abstract class InputtableControl : ComponentBase
 {
     
   /* === Blazor component parameters ================================================================================ */
-  [Parameter] public string? label { get; set; }
+  [Microsoft.AspNetCore.Components.Parameter] 
+  public string? label { get; set; } = null;
   
-  [Parameter] public string? accessibilityGuidance { get; set; }
+  [Microsoft.AspNetCore.Components.Parameter] 
+  public string? accessibilityGuidance { get; set; } = null;
   
-  [Parameter] public string? externalLabelHTML_ID { get; set; }
+  [Microsoft.AspNetCore.Components.Parameter] 
+  public string? externalLabelHTML_ID { get; set; } = null;
   
-  [Parameter] public string? guidance { get; set; }
+  [Microsoft.AspNetCore.Components.Parameter] 
+  public string? guidance { get; set; } = null;
   
-  
-  [Parameter] public bool required { get; set; } = false;
+  [Microsoft.AspNetCore.Components.Parameter] 
+  public bool required { get; set; } = false;
 
-  [Parameter] public bool mustDisplayAppropriateBadgeIfInputIsRequired { get; set; } = false;
+  [Microsoft.AspNetCore.Components.Parameter] 
+  public bool mustDisplayAppropriateBadgeIfInputIsRequired { get; set; } = false;
 
-  [Parameter] public bool mustDisplayAppropriateBadgeIfInputIsOptional { get; set; } = false;
+  [Microsoft.AspNetCore.Components.Parameter] 
+  public bool mustDisplayAppropriateBadgeIfInputIsOptional { get; set; } = false;
+
+  [Microsoft.AspNetCore.Components.Parameter] 
+  public bool mustAddInvisibleBadgeForHeightEqualizingWhenNoBadge { get; set; } = false;
  
+  [Microsoft.AspNetCore.Components.Parameter]  
+  public bool @readonly { get; set; } = false;
   
-  [Parameter] public string? coreElementHTML_ID { get; set; }
+  [Microsoft.AspNetCore.Components.Parameter] 
+  public string? coreElementHTML_ID { get; set; }
   
-  
-  [Parameter] public bool disabled { get; set; } = false;
+  [Microsoft.AspNetCore.Components.Parameter] 
+  public bool disabled { get; set; } = false;
   
   
   /* === State ====================================================================================================== */

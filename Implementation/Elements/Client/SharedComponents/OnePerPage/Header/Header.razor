@@ -1,0 +1,12 @@
+﻿@using FrontEndFramework.Components.Controls.Buttons.HamburgerMenu
+@using Client.Services
+
+
+<header class="Header">
+  
+  <HamburgerMenuButton
+    spaceSeparatedAdditionalCSS_Classes=@($"Header-Button { hamburgerMenuButtonAdditionalCSS_Class }") 
+    onClick=@DrawerMenuService.toggleDisplaying
+  />
+  
+</header>

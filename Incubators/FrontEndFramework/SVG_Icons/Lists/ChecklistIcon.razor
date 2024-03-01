@@ -1,7 +1,7 @@
 ﻿<svg
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 20 15.23"
-  class=@spaceSeparatedAdditionalCSS_Classes
+  class=@rootElementModifierCSS_Class
 >
   <path d="M9.9 1.77H20v2.1H9.9zM9.9 10.17H20v2.1H9.9zM3.72 15.23 0 11.51l1.48-1.48 2.22 2.23 4.45-4.45 1.5 1.48-5.93 5.94zM6.08 1.5v3.07H3.01V1.5h3.07M7.58 0H1.51v6.07h6.07V0Z"></path>  
 </svg>
@@ -9,7 +9,7 @@
 
 @code {
 
-  [Parameter]
-  public string? spaceSeparatedAdditionalCSS_Classes { get; set; }
+  [Microsoft.AspNetCore.Components.Parameter]
+  public string? rootElementModifierCSS_Class { get; set; }
 
 }

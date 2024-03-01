@@ -1,0 +1,146 @@
+.TasksFilteringPanel
+
+  &-Title
+
+    font-size 18px
+
+    font-weight bold
+    color: ShadesOfGray__39ColorsW3C_Palette[12]
+
+
+  &-List
+
+    PositionalRelationship({
+      definitions: (".TasksFilteringPanel-Title" { retireFromIt: { y: 8px }, pushItFromSelf: { y: 16px } })
+    })
+
+
+    &-Item
+
+      &:has(.TasksFilteringPanel-List-Item-CollapsingToggle)
+
+        display grid
+        grid-template-areas "COLLAPSING_TOGGLE BUTTON" "CHILD_LIST CHILD_LIST"
+        grid-template-columns auto minmax(0, 1fr)
+        column-gap 6px
+
+
+      &-Button
+
+        ButtonLikeElementsPrimer()
+        
+        display flex
+        align-items center
+        column-gap 6px
+        
+        width 100%
+        Paddings({
+          horizontalSymmetric: 4px,
+          verticalSymmetric: 4px
+        })
+
+        cursor pointer
+        
+        grid-area BUTTON
+
+
+        &:hover
+
+          background: YDF_ColorPalette.skyBlue.pastelLight
+
+
+        &:focus
+
+          box-shadow: inset 0 0 0 2px YDF_ColorPalette.skyBlue.pastelMediumLight
+
+
+        &:active
+
+          background-color: YDF_ColorPalette.skyBlue.pastelSlightlyLight
+
+          
+        &:disabled
+
+          pointer-events none
+          
+
+        &__SelectedState
+
+          background: YDF_ColorPalette.deepSkyBlue.pastelMediumLight
+          pointer-events none
+
+
+      &-Icon
+
+        width 20px
+        height 20px
+
+        fill: ShadesOfGray__39ColorsW3C_Palette[20]
+
+        flex-shrink 0
+        
+        
+        /.TasksFilteringPanel-List-Item-Button:disabled &
+
+          fill: ShadesOfGray__39ColorsW3C_Palette[28]
+          
+
+
+      &-Label
+
+        applyTextGeometryWithoutExtraSpaceCausedByLineHeight({
+          fontSize: 14px,
+          lineSpacing: 4px,
+          mustAllowWordsBreakingAnywhere: true
+        })
+
+        color: ShadesOfGray__39ColorsW3C_Palette[12]
+
+
+        /.TasksFilteringPanel-List-Item-Button:disabled &
+
+          color: ShadesOfGray__39ColorsW3C_Palette[28]
+
+
+      &-CollapsingToggle
+
+        EQUAL_WIDTH_AND_HEIGHT = 20px
+
+        ButtonLikeElementsPrimer()
+
+        display inline-flex
+        border-radius: buildCalcExpression("${ EQUAL_WIDTH_AND_HEIGHT }/2", { EQUAL_WIDTH_AND_HEIGHT: EQUAL_WIDTH_AND_HEIGHT })
+
+        grid-area COLLAPSING_TOGGLE
+        align-self center
+
+        cursor pointer
+
+
+        &:focus
+
+          box-shadow: 0 0 4px 2px YDF_ColorPalette.skyBlue.bright
+
+
+        &-Icon
+
+          height EQUAL_WIDTH_AND_HEIGHT
+
+          fill: ShadesOfGray__39ColorsW3C_Palette[24]
+
+
+          ../:hover &
+
+            fill: ShadesOfGray__39ColorsW3C_Palette[12]
+
+
+          ../:active &
+
+            fill: ShadesOfGray__39ColorsW3C_Palette[16]
+
+
+      >.TasksFilteringPanel-List
+
+        padding-left 8px
+
+        grid-area CHILD_LIST

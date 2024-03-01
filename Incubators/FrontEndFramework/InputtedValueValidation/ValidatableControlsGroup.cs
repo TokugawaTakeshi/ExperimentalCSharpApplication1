@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FrontEndFramework.ValidatableControl;
 
 
 namespace FrontEndFramework.InputtedValueValidation;
@@ -36,9 +37,7 @@ public class ValidatableControlsGroup
     
   }
 
-  public static void PointOutValidationErrors(
-    object controlsPayload, string scrollingContainerHTML_ID
-  ) {
+  public static void PointOutValidationErrors(object controlsPayload, string? scrollingContainerHTML_ID = null) {
 
     Type parameterType = controlsPayload.GetType();
     bool isCurrentControlTheFirstInvalidOne = true;
@@ -61,9 +60,27 @@ public class ValidatableControlsGroup
       {
         continue;
       }
-      
+
+
+      IValidatableControl componentInstance = controlPayload.GetComponentInstance();
+
+      componentInstance.HighlightInvalidInput();
+
+      if (isCurrentControlTheFirstInvalidOne)
+      {
+        
+        componentInstance.Focus();
+
+        if (scrollingContainerHTML_ID is not null)
+        {
+          // TODO Scroll
+        }
+
+        isCurrentControlTheFirstInvalidOne = false;
+
+      }
+
     }
-    
     
   }
   

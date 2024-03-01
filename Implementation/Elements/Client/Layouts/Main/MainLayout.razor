@@ -1,5 +1,12 @@
-﻿@using Client.Components.SharedSingletons.Header
-@using Client.Components.SharedReusable.NavigationMenu
+﻿@using Client.Services
+
+@using Client.SharedComponents.NavigationMenu
+@using Client.SharedComponents.OnePerPage.Header
+
+@using Microsoft.AspNetCore.Components.Sections
+@using FrontEndFramework.Components.BlockingLoadingOverlay
+@using FrontEndFramework.Components.Controls.Buttons.Closing
+@using FrontEndFramework.Components.Snackbar
 
 
 @inherits LayoutComponentBase
@@ -8,7 +15,7 @@
 <div class="MainLayout">
   
   <div class="MainLayout-UpperFixedContentSlot">
-    <Header />
+    <Header rootElementModifierCSS_Class="MainLayout-HamburgerMenuButton" />
   </div>
   
   <div class="MainLayout-Sidebar">
@@ -18,5 +25,23 @@
   <main class="MainLayout-SpecificContent">
     @Body
   </main>
+  
+  @if (DrawerMenuService.isDrawerDisplaying)
+  {
+    <div class="MainLayout-DrawerOverlay">
+      <div class="MainLayout-Drawer">
+        <NavigationMenu /> 
+        <ClosingButton
+          rootElementModifierCSS_Class="MainLayout-ClosingDrawerButton"
+          onClick=@onClickDrawerClosingButton 
+        />
+      </div>
+    </div> 
+  }
+  
+  <Snackbar/>
+  <BlockingLoadingOverlay/>
+  
+  <SectionOutlet SectionName="FloatingAndFixedContent" />
   
 </div>

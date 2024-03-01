@@ -4,6 +4,7 @@ block Data
 
   -
     const tabsData = {
+      
       monthOverview: {
         tabHTML_ID: "MONTH_OVERVIEW--TAB",
         panelHTML_ID: "MONTH_OVERVIEW--TAB_PANEL",
@@ -33,12 +34,12 @@ block append Metadata
     HTML_PAGE_LANGUAGE = "ja";
     HTML_PAGE_TITLE = "日読み ｜ やまとダイワ几帳面さ";
 
-    styleSheetsURIs = [ "@All/Main", "@All/ExternalComponents" ];
+    styleSheetsURIs = [ "@All/Primer", "@All/ExternalComponents", "@All/Internals" ];
 
 
 block append Requirements
 
-  include ../../Components/Components.pug
+  include ../../StaticPreview/_Requirements.pug
 
 
 block append SpecificContent

@@ -1,12 +1,14 @@
 ﻿using CommonSolution.Entities;
 using CommonSolution.Gateways;
-using Task = CommonSolution.Entities.Task;
 
-using MockDataSource.Collections;
 using MockDataSource.Entities;
-using MockDataSource.Utils;
+using MockDataSource.Collections;
+using MockDataSource.SamplesRepositories;
+using MockDataSource.AdditionalStructures;
 
 using System.Diagnostics;
+using YamatoDaiwa.CSharpExtensions;
+using YamatoDaiwa.CSharpExtensions.DataMocking;
 
 
 namespace MockDataSource;
@@ -15,31 +17,39 @@ namespace MockDataSource;
 public class MockDataSource
 {
 
-  /* === データ ======================================================================================================= */
+  /* ━━━ Data ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   public readonly List<Person> People;
-  public readonly List<Task> Tasks;
+  public readonly List<CommonSolution.Entities.Task> Tasks;
+  public readonly List<Location> Locations;
 
-  
-  /* === 初期化 ====================================================================================================== */
-  private static MockDataSource? _selfSoleInstance;
+
+  /* ━━━ Initialization ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  private static MockDataSource? selfSoleInstance;
 
   public static MockDataSource GetInstance()
   {
 
-    if (_selfSoleInstance == null)
+    if (MockDataSource.selfSoleInstance == null)
     {
-      _selfSoleInstance = new MockDataSource();
+      MockDataSource.selfSoleInstance = new MockDataSource();
       Debug.WriteLine("Mock data source has been initialized.");
     }
 
-    return _selfSoleInstance;
+    return selfSoleInstance;
     
   }
   
   private MockDataSource()
   {
     
-    People = PeopleCollectionsMocker.Generate(new PeopleCollectionsMocker.Subset[] {
+    this.People = PeopleCollectionsMocker.Generate(new PeopleCollectionsMocker.Subset[] {
+      new ()
+      {
+        NullablePropertiesDecisionStrategy = DataMocking.NullablePropertiesDecisionStrategies.
+            mustGenerateWith50PercentageProbabilityIfHasNotBeenPreDefined,
+        WithNames = PeopleNamesRepository.PeopleNames,
+        Quantity = (uint)PeopleNamesRepository.PeopleNames.Length
+      },
       new()
       {
         NullablePropertiesDecisionStrategy = DataMocking.NullablePropertiesDecisionStrategies.mustGenerateAll, 
@@ -47,37 +57,64 @@ public class MockDataSource
       },
       new()
       {
-        NullablePropertiesDecisionStrategy = DataMocking.NullablePropertiesDecisionStrategies.mustGenerateWith50PercentageProbability,
+        NullablePropertiesDecisionStrategy = DataMocking.NullablePropertiesDecisionStrategies.
+            mustGenerateWith50PercentageProbabilityIfHasNotBeenPreDefined,
         Quantity = 5
       },
       new()
       {
         FamilyNamePrefix = "SEARCH_TEST-", 
-        NullablePropertiesDecisionStrategy = DataMocking.NullablePropertiesDecisionStrategies.mustGenerateWith50PercentageProbability,
+        NullablePropertiesDecisionStrategy = DataMocking.NullablePropertiesDecisionStrategies.
+            mustGenerateWith50PercentageProbabilityIfHasNotBeenPreDefined,
         Quantity = 5
+      },
+      new ()
+      {
+        NullablePropertiesDecisionStrategy = DataMocking.NullablePropertiesDecisionStrategies.
+            mustGenerateWith50PercentageProbabilityIfHasNotBeenPreDefined,
+        WithNames = new []
+        {
+          new PersonNameData
+          {
+            FamilyName = "OverflowTest:ÀÇĤfhjgpjklbĜiEstosTreMalfacileEnvolverLaVicoAbcdefghijklmnopqrstuvwxyza",
+            FamilyNameSpell = "OverflowTest:ÀÇĤfhjgpjklbĜiEstosTreMalfacileEnvolverLaVicoAbcdefghijklmnopqrstuvwxyza",
+            GivenName = "OverflowTest:ÀÇĤfhjgpjklbĜiEstosTreMalfacileEnvolverLaVicoAbcdefghijklmnopqrstuvwxyza",
+            GivenNameSpell = "OverflowTest:ÀÇĤfhjgpjklbĜiEstosTreMalfacileEnvolverLaVicoAbcdefghijklmnopqrstuvwxyza",
+            IsGivenNameForMales = true
+          }
+        },
+        Quantity = 1
       }
     }).ToList();
 
-    Tasks = TasksCollectionsMocker.Generate(new TasksCollectionsMocker.Subset[] {
-      new()
-      {
-        NullablePropertiesDecisionStrategy = DataMocking.NullablePropertiesDecisionStrategies.mustGenerateAll,
-        Quantity = 5
+    this.Locations = LocationSamplesRepository.Locactions.ToList();
+    
+    this.Tasks = TasksCollectionsMocker.Generate(
+      new TasksCollectionsMocker.Subset[] {
+        new()
+        {
+          NullablePropertiesDecisionStrategy = DataMocking.NullablePropertiesDecisionStrategies.mustGenerateAll,
+          Quantity = 10
+        },
+        new()
+        {
+          NullablePropertiesDecisionStrategy = DataMocking.NullablePropertiesDecisionStrategies.mustGenerateWith50PercentageProbabilityIfHasNotBeenPreDefined,
+          Quantity = 5
+        }
       },
-      new()
+      new TasksCollectionsMocker.Dependencies
       {
-        NullablePropertiesDecisionStrategy = DataMocking.NullablePropertiesDecisionStrategies.mustGenerateWith50PercentageProbability,
-        Quantity = 5
+        Locations = this.Locations.ToArray()
       }
-    }).ToList();
+    ).ToList();
 
   }
 
 
-  /* === 人 ========================================================================================================= */
+  /* ━━━ 人 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   public Person[] RetrieveAllPeople()
   {
-    return People.ToArray();
+    return People.Select(person => person.clone()).ToArray();
   }
 
   public IPersonGateway.Adding.ResponseData AddPerson(IPersonGateway.Adding.RequestData requestData)
@@ -86,11 +123,17 @@ public class MockDataSource
     Person newPerson = PersonMocker.Generate(
       new PersonMocker.PreDefines 
       {
-        FamilyName = requestData.FamilyName,
-        GivenName = requestData.GivenName,
-        Age = requestData.Age,
-        EmailAddress = requestData.EmailAddress,
-        PhoneNumber = requestData.PhoneNumber
+        familyName = requestData.FamilyName,
+        givenName = requestData.GivenName,
+        familyNameSpell = requestData.FamilyNameSpell,
+        givenNameSpell = requestData.GivenNameSpell,
+        gender = requestData.Gender,
+        avatarURI = requestData.AvatarURI,
+        birthYear = requestData.BirthYear, 
+        birthMonthNumber__numerationFrom1 = requestData.BirthMonthNumber__NumerationFrom1,
+        birthDayOfMonth__numerationFrom1 = requestData.BirthDayOfMonth__NumerationFrom1,
+        emailAddress = requestData.EmailAddress,
+        phoneNumber = requestData.PhoneNumber
       },
       new PersonMocker.Options
       {
@@ -113,12 +156,18 @@ public class MockDataSource
     {
       throw new InvalidDataException($"ID「{ requestData.ID }」の人が発見されず。");
     }
-
-    targetPerson.FamilyName = requestData.FamilyName;
-    targetPerson.GivenName = requestData.GivenName;
-    targetPerson.Age = requestData.Age;
-    targetPerson.EmailAddress = requestData.EmailAddress;
-    targetPerson.PhoneNumber = requestData.PhoneNumber;
+    
+    
+    targetPerson.familyName = requestData.FamilyName;
+    targetPerson.givenName = requestData.GivenName;
+    targetPerson.familyNameSpell = requestData.FamilyNameSpell;
+    targetPerson.givenNameSpell = requestData.GivenNameSpell;
+    targetPerson.gender = requestData.Gender;
+    targetPerson.birthYear = requestData.BirthYear;
+    targetPerson.birthMonthNumber__numerationFrom1 = requestData.BirthMonthNumber__NumerationFrom1;
+    targetPerson.birthDayOfMonth__numerationFrom1 = requestData.BirthDayOfMonth__NumerationFrom1;
+    targetPerson.emailAddress = requestData.EmailAddress;
+    targetPerson.phoneNumber__digitsOnly = requestData.PhoneNumber;
     
   }
 
@@ -128,24 +177,34 @@ public class MockDataSource
   }
   
   
-  /* === 課題 ======================================================================================================= */
-  public Task[] RetrieveAllTasks()
+  /* ━━━ 課題 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  public CommonSolution.Entities.Task[] RetrieveAllTasks()
   {
-    return Tasks.ToArray();
+    return Tasks.Select(task => task.clone()).ToArray();
   }
 
-  public ITaskGateway.Adding.ResponseData AddTask(ITaskGateway.Adding.RequestData requestData)
+  public TaskGateway.Adding.ResponseData AddTask(TaskGateway.Adding.RequestData requestData)
   {
 
-    Task newTask = TaskMocker.Generate(
+    CommonSolution.Entities.Task newTask = TaskMocker.Generate(
       new TaskMocker.PreDefines
       {
-        Title = requestData.Title,
-        Description = requestData.Description,
-        Subtasks = requestData.SubtasksIDs == null ? 
-          null : Tasks.FindAll(task => requestData.SubtasksIDs.Any(task.ID.Contains)) 
+        title = requestData.Title,
+        description = requestData.Description,
+        isComplete = requestData.IsComplete,
+        subtasks = requestData.SubtasksIDs == null ? 
+          null : Tasks.FindAll(task => requestData.SubtasksIDs.Any(task.ID.Contains)),
+        associatedDateTime = requestData.AssociatedDate__ISO8601 is not null ? 
+            DateTimeExtensions.CreateDateTimeFromISO8601_String(requestData.AssociatedDate__ISO8601) : null,
+        associatedDate = requestData.AssociatedDate__ISO8601 is not null ?
+            DateOnlyExtensions.CreateDateOnlyFromISO8601_String(requestData.AssociatedDate__ISO8601) : null,
+        associatedLocation = requestData.AssociatedLocation
       },
-      new TaskMocker.Options()
+      new TaskMocker.Dependencies
+      {
+        Locations = this.Locations.ToArray()
+      },
+      new TaskMocker.Options
       {
         NullablePropertiesDecisionStrategy =
           DataMocking.NullablePropertiesDecisionStrategies.mustSkipIfHasNotBeenPreDefined
@@ -154,29 +213,33 @@ public class MockDataSource
     
     Tasks.Insert(0, newTask);
 
-    return new ITaskGateway.Adding.ResponseData() { AddedTaskID = newTask.ID };
+    return new TaskGateway.Adding.ResponseData() { AddedTaskID = newTask.ID };
 
   }
 
-  public void UpdateTask(ITaskGateway.Updating.RequestData requestData)
+  public void UpdateTask(TaskGateway.Updating.RequestData requestData)
   {
 
-    Task? targetTask = Tasks.Find(task => task.ID == requestData.ID);
+    CommonSolution.Entities.Task? targetTask = Tasks.Find(task => task.ID == requestData.ID);
 
     if (targetTask == null)
     {
       throw new InvalidDataException($"ID「{ requestData.ID }」の課題が発見されず。");
     }
 
-    targetTask.Title = requestData.Title;
-    targetTask.Description = requestData.Description;
-
+    targetTask.title = requestData.Title;
+    targetTask.description = requestData.Description;
+    targetTask.isComplete = requestData.IsComplete;
+    
     if (requestData.SubtasksIDs != null)
     {
-      targetTask.Subtasks = Tasks.FindAll(task => requestData.SubtasksIDs.Any(task.ID.Contains));
+      targetTask.subtasks = Tasks.FindAll(task => requestData.SubtasksIDs.Any(task.ID.Contains));
     }
 
-    targetTask.IsComplete = requestData.IsComplete;
+    targetTask.associatedDateTime = targetTask.associatedDateTime;
+    targetTask.associatedDate = targetTask.associatedDate;
+
+    targetTask.associatedLocation = targetTask.associatedLocation;
 
   }
 

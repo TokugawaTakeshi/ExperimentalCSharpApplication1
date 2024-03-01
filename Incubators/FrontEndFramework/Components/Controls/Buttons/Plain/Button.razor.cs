@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
+using YamatoDaiwa.CSharpExtensions;
 using Utils;
 
 
@@ -31,6 +33,17 @@ public partial class Button : ComponentBase
   [Parameter] public string? externalURI { get; set; }
 
   [Parameter] public bool disabled { get; set; } = false;
+
+  [Inject] protected IJSRuntime JSRuntime { get; set; } = null!;
+
+  private ElementReference rootElement;
+  
+  
+  /* === Public methods ============================================================================================= */
+  public async System.Threading.Tasks.Task focus()
+  {
+    await JSRuntime.InvokeVoidAsync("putFocusOnElement", this.rootElement);
+  }
   
   
   /* --- Theme ------------------------------------------------------------------------------------------------------ */

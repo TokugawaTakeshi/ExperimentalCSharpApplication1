@@ -1,0 +1,39 @@
+﻿@using FrontEndFramework.Components.Controls.Buttons.Closing
+
+
+@if (isDisplaying)
+{
+  <div 
+    class=@($"ModalDialog--YDF { rootElementModifierCSS_Classes }")
+    role="dialog"
+    tabindex="-1"
+  >
+    <div class="ModalDialog--YDF-Body" role="document">
+      
+      @if (title is not null || !noDismissingButton)
+      {
+      
+        <div class="ModalDialog--YDF-Header">
+          
+          @if (title is not null)
+          {
+            <div class="ModalDialog--YDF-Title">@( title )</div>  
+          }
+          
+          @if (!noDismissingButton)
+          {
+            <ClosingButton
+              onClick=@dismiss
+              rootElementModifierCSS_Class="ModalDialog--YDF-DismissingButton"
+            />     
+          }
+          
+        </div>
+        
+      }
+      
+      @ChildContent
+      
+    </div>
+  </div>
+}

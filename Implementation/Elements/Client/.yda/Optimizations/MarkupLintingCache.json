@@ -1,93 +1,146 @@
 {
-  "Components/Components.pug": {
+  "SharedComponents/SharedComponents.pug": {
     "issues": [],
-    "modificationDatetime__ISO_8601": "2023-05-05T06:40:32.383Z"
+    "modificationDatetime__ISO_8601": "2023-09-18T03:48:28.027Z"
   },
   "StaticPreview/StaticPreviewAnywherePage.pug": {
     "issues": [],
     "modificationDatetime__ISO_8601": "2023-01-07T03:46:25.241Z"
   },
+  "StaticPreview/_Requirements.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-07-27T03:11:04.963Z"
+  },
   "Layouts/Main/MainLayout.pug": {
     "issues": [],
-    "modificationDatetime__ISO_8601": "2023-04-03T10:07:58.294Z"
-  },
-  "Components/SharedSingletons/Header/Header.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2022-11-21T06:35:22.339Z"
-  },
-  "Components/SharedSingletons/ModalDialog/ModalDialog.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2022-12-10T08:14:17.180Z"
-  },
-  "Components/SharedReusable/NavigationMenu/NavigationMenu.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2023-03-25T04:36:40.052Z"
-  },
-  "Pages/Person/Management/PeopleManagementPage.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2023-05-05T06:40:32.386Z"
-  },
-  "Pages/Task/Management/TasksManagementPage.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2023-05-05T06:40:32.387Z"
-  },
-  "Components/SharedReusable/Cards/Person/PersonCard.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2023-04-03T10:11:23.005Z"
-  },
-  "Components/SharedReusable/Editors/Task/TaskEditor.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2022-12-02T06:46:41.515Z"
-  },
-  "Components/SharedReusable/Managers/People/PeopleManager.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2023-04-03T10:10:48.627Z"
-  },
-  "Components/SharedReusable/Cards/Task/TaskCard.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2022-12-10T08:14:17.165Z"
-  },
-  "Components/SharedReusable/Managers/Person/PersonManager.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2023-04-05T02:57:54.964Z"
-  },
-  "Components/SharedReusable/Managers/Tasks/TasksManager.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2022-12-22T06:52:30.766Z"
-  },
-  "Components/SharedReusable/Managers/TasksGroupsTree/TasksGroupsTreeManager.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2023-03-25T04:56:38.383Z"
-  },
-  "Components/SharedReusable/Cards/Person/LoadingPlaceholder/PersonCardLoadingPlaceholder.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2022-12-10T08:14:17.162Z"
-  },
-  "Components/SharedReusable/Cards/Task/LoadingPlaceholder/TaskCardLoadingPlaceholder.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2023-04-07T08:26:58.566Z"
-  },
-  "Components/SharedReusable/Managers/Task/TaskManager.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2023-04-03T10:14:02.802Z"
-  },
-  "Components/SharedReusable/Controls/CompoundControlShell/CompoundControlShell.pug": {
-    "issues": [],
-    "modificationDatetime__ISO_8601": "2022-12-28T06:23:25.780Z"
+    "modificationDatetime__ISO_8601": "2023-10-16T05:31:26.488Z"
   },
   "Pages/Calendar/CalendarPage.pug": {
     "issues": [],
-    "modificationDatetime__ISO_8601": "2023-05-05T06:40:32.385Z"
+    "modificationDatetime__ISO_8601": "2023-09-07T06:36:19.614Z"
   },
-  "Components/SharedReusable/Viewers/Calendar/Month/MonthViewer.pug": {
-    "issues": [
-      {
-        "code": "PUG:LINT_REQUIRELINEFEEDATFILEEND",
-        "message": "Missing line feed at file end",
-        "sourceListing": "﻿mixin MonthViewer(properties, statesSimulations)\n\n  - \n\n    properties = properties ?? {} // TODO 必須プロパティが有る場合削除\n    statesSimulations = statesSimulations ?? {} // TODO 必須シミュレーションが有る場合削除\n \n    const {\n    \n    } = properties\n \n    const {\n    \n    } = statesSimulations\n    \n    \n  table.MonthViewer&attributes(attributes)\n\n    thead\n      tr\n        th.MonthViewer-DayTitleCell.MonthViewer-DayTitleCell__Holiday(scope=\"col\") 日\n        th.MonthViewer-DayTitleCell(scope=\"col\") 月\n        th.MonthViewer-DayTitleCell(scope=\"col\") 火\n        th.MonthViewer-DayTitleCell(scope=\"col\") 水\n        th.MonthViewer-DayTitleCell(scope=\"col\") 木\n        th.MonthViewer-DayTitleCell(scope=\"col\") 金\n        th.MonthViewer-DayTitleCell.MonthViewer-DayTitleCell__Holiday(scope=\"col\") 土\n\n    tbody\n\n      -\n\n        const weekRowsData = twoDimensionalizeArray({\n          targetFlatArray: CalendarBuilder.generateDataFor42DaysMatrix({\n            targetYear: 2023,\n            targetMonthNumber__numerationFrom1: 1\n          }),\n          elementsCountPerNestedArray: 7\n        });\n\n      each weekRowData in weekRowsData\n\n        tr\n          each dayCellData in weekRowData\n            \n            //- 【 理論 】 tdには「container-type」を適応しても効果無いので、「container queries」機能を使うには新規包みを追加せざる得ない。\n            td.MonthViewer-DayCell: .MonthViewer-DayCell-ContainerQueryProvider\n\n              span.MonthViewer-DayCell-Title= dayCellData.dayOfMonth\n\n              -\n\n                const hasOneOrMoreTasksAssociatedWithTime = getRandomBoolean();\n                const hasOneOrMoreTasksAssociatedWithDate = getRandomBoolean();\n                const hasOneOrMoreDocumentsAssociatedWithDate = getRandomBoolean();\n\n                const ITEMS_RELATED_WIDTH_DATE_TITLE_HTML_ID = `ITEMS_RELATED_WIDTH_DATE--TITLE-${ year }` +\n                    `${ dayCellData.month__numerationFrom1 }-${ dayCellData.dayOfMonth }`\n  \n  \n              .MonthViewer-DayCell-ScrollViewForLargeContainers\n\n                if hasOneOrMoreTasksAssociatedWithTime\n\n                  .MonthViewer-DayCell-ScrollViewForLargeContainers-Title(\n                    id=ITEMS_RELATED_WIDTH_DATE_TITLE_HTML_ID\n                  ) 日が特定された行動 \n\n                  ul.MonthViewer-DayCell-ScrollViewForLargeContainers-List(\n                    aria-labelledby=ITEMS_RELATED_WIDTH_DATE_TITLE_HTML_ID\n                    class=\"MonthViewer-DayCell-ScrollViewForLargeContainers-List__ActionAssociatedWithSpecificDate\"\n                  )\n                    each index in Array.from(new Array(5).keys())\n                      li.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Item\n                        .MonthViewer-DayCell-ScrollViewForLargeContainers-List-IconDecorativeWrapper\n                          +Calendar__Date--YDF_Icon.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Icon(\n                            aria-label=\"日が特定された行動\"\n                          )\n                        span.MonthViewer-DayCell-ScrollViewForLargeContainers-List-Label\n                          | #{ index === 3 ? textOverflowSafetyTest : `会議${ index + 1 }` }\n                    //- === TODO =======================================================================================\n                    //-\n\n                      span.MonthViewer-DayCell-ButtonForSmallContainers-Icon 日付関連\n\n                //-\n                  if hasOneOrMoreTasksAssociatedWithDate\n\n                    .MonthViewer-DayCell-ButtonForSmallContainers-TitleWithIconGroup\n                      +Calendar__Time--YDF_Icon.MonthViewer-DayCell-ButtonForSmallContainers-Icon\n                      span.MonthViewer-DayCell-ButtonForSmallContainers-Icon 日時関連\n\n                  if hasOneOrMoreDocumentsAssociatedWithDate\n\n                    .MonthViewer-DayCell-ButtonForSmallContainers-TitleWithIconGroup\n                      +Folder__Stationery--YDF_Icon.MonthViewer-DayCell-ButtonForSmallContainers-Icon\n                      span.MonthViewer-DayCell-ButtonForSmallContainers-Icon 関連資料\n\n              //-\n                button.MonthViewer-DayCell-ButtonForSmallContainers(\n                  type=\"button\"\n                )\n  \n                  if hasOneOrMoreTasksAssociatedWithTime\n  \n                    +Calendar__Date--YDF_Icon.MonthViewer-DayCell-ButtonForSmallContainers-Icon(\n                      aria-label=\"日が特定された行動\"\n                    )\n  \n                  if hasOneOrMoreTasksAssociatedWithDate\n  \n                    +Calendar__Time--YDF_Icon.MonthViewer-DayCell-ButtonForSmallContainers-Icon(\n                      aria-label=\"時が特定された行動\"\n                    )\n  \n                  if hasOneOrMoreDocumentsAssociatedWithDate\n  \n                    +Folder__Stationery--YDF_Icon.MonthViewer-DayCell-ButtonForSmallContainers-Icon(\n                      aria-label=\"日を特定した情報\"\n                    )",
-        "lineNumber": 120
-      }
-    ],
-    "modificationDatetime__ISO_8601": "2023-05-05T06:40:32.384Z"
+  "StaticPreview/_Requirements/BusinessRules.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-07-27T03:11:04.958Z"
+  },
+  "StaticPreview/_Requirements/Functions.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-06-06T02:42:16.702Z"
+  },
+  "Pages/Person/Management/PeopleManagementPage.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-09-07T07:06:05.524Z"
+  },
+  "Pages/Task/Management/TasksManagementPage.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-12-08T06:34:44.099Z"
+  },
+  "SharedComponents/Reusables/NavigationMenu/NavigationMenu.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-03-25T04:36:40.052Z"
+  },
+  "SharedComponents/Singletons/Header/Header.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-08-29T07:35:45.192Z"
+  },
+  "SharedComponents/Reusables/Cards/Person/PersonCard.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-08-29T07:35:43.080Z"
+  },
+  "SharedComponents/Reusables/Cards/Task/TaskCard.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-08-29T07:35:39.231Z"
+  },
+  "SharedComponents/Reusables/Managers/Person/PersonManager.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-08-29T07:34:59.201Z"
+  },
+  "SharedComponents/Reusables/Managers/Task/TaskManager.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-06-05T02:31:30.609Z"
+  },
+  "SharedComponents/Reusables/Managers/Tasks/TasksManager.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2022-12-22T06:52:30.766Z"
+  },
+  "SharedComponents/Reusables/Managers/TasksGroupsTree/TasksGroupsTreeManager.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-03-25T04:56:38.383Z"
+  },
+  "SharedComponents/Reusables/Viewers/People/PeopleViewer.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-08-02T04:58:06.263Z"
+  },
+  "SharedComponents/Reusables/Cards/Person/LoadingPlaceholder/PersonCardLoadingPlaceholder.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-06-22T02:51:16.046Z"
+  },
+  "SharedComponents/Reusables/Cards/Task/LoadingPlaceholder/TaskCardLoadingPlaceholder.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-04-07T08:26:58.566Z"
+  },
+  "SharedComponents/Reusables/Viewers/Calendar/Month/MonthViewer.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-05-31T06:08:57.903Z"
+  },
+  "SharedComponents/Reusables/Viewers/Tasks/TasksViewer.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-08-29T07:34:59.208Z"
+  },
+  "SharedComponents/NavigationMenu/NavigationMenu.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-03-25T04:36:40.052Z"
+  },
+  "SharedComponents/Cards/Person/PersonCard.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-08-29T07:35:43.080Z"
+  },
+  "SharedComponents/Cards/Task/TaskCard.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-09-29T02:18:58.082Z"
+  },
+  "SharedComponents/Managers/Person/PersonManager.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2024-01-02T04:00:22.161Z"
+  },
+  "SharedComponents/Managers/Task/TaskManager.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2024-01-02T04:00:39.496Z"
+  },
+  "SharedComponents/Managers/Tasks/TasksManager.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2022-12-22T06:52:30.766Z"
+  },
+  "SharedComponents/Managers/TasksGroupsTree/TasksGroupsTreeManager.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-03-25T04:56:38.383Z"
+  },
+  "SharedComponents/OnePerPage/Header/Header.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-08-29T07:35:45.192Z"
+  },
+  "SharedComponents/Viewers/People/PeopleViewer.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2024-01-02T04:00:59.466Z"
+  },
+  "SharedComponents/Viewers/Tasks/TasksViewer.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2024-01-02T04:01:12.171Z"
+  },
+  "SharedComponents/Cards/Person/LoadingPlaceholder/PersonCardLoadingPlaceholder.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-06-22T02:51:16.046Z"
+  },
+  "SharedComponents/Cards/Task/LoadingPlaceholder/TaskCardLoadingPlaceholder.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-04-07T08:26:58.566Z"
+  },
+  "SharedComponents/Viewers/Calendar/Month/MonthViewer.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-05-31T06:08:57.903Z"
+  },
+  "SharedComponents/Controls/TasksFilteringPanel/TasksFilteringPanel.pug": {
+    "issues": [],
+    "modificationDatetime__ISO_8601": "2023-12-03T07:44:05.723Z"
   }
 }

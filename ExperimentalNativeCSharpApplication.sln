@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontEndFramework", "Incuba
 		{3F2D2656-BFFE-405D-BFB9-E5E2C9584CA9} = {3F2D2656-BFFE-405D-BFB9-E5E2C9584CA9}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientAndFrontServer", "Implementation\Interactions\ClientAndFrontServer\ClientAndFrontServer\ClientAndFrontServer.csproj", "{579EF77F-A420-4AAE-92A8-7D539FAAA72E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

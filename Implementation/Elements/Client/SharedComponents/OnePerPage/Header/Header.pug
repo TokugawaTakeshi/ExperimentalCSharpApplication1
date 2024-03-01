@@ -1,0 +1,9 @@
+mixin Header(properties)
+  
+  - const { hamburgerMenuButtonAdditionalCSS_Class } =  properties ?? {};
+
+  header.Header&attributes(attributes)
+
+    +HamburgerMenuButton--YDF.Header-Button(
+      class= hamburgerMenuButtonAdditionalCSS_Class
+    )

@@ -1,7 +1,8 @@
 ﻿using CommonSolution.Entities;
-
+using CommonSolution.Fundamentals;
+using MockDataSource.AdditionalStructures;
 using MockDataSource.Entities;
-using MockDataSource.Utils;
+using YamatoDaiwa.CSharpExtensions.DataMocking;
 
 
 namespace MockDataSource.Collections;
@@ -17,10 +18,24 @@ internal abstract class PeopleCollectionsMocker
 
     foreach (Subset subset in order)
     {
-      for (uint itemNumber = 0; itemNumber < subset.Quantity; itemNumber++)
+
+      uint itemsQuantity = subset.WithNames is not null ? (uint)subset.WithNames.Length : subset.Quantity;
+      
+      for (uint itemNumber = 1; itemNumber <= itemsQuantity; itemNumber++)
       {
+        
+        PersonNameData? name = subset.WithNames?[itemNumber - 1]; 
+        
         accumulatingCollection.Add(PersonMocker.Generate(
-          preDefines: null,
+          preDefines: name is not null ? 
+            new PersonMocker.PreDefines
+            {
+              familyName = name.Value.FamilyName,
+              familyNameSpell = name.Value.FamilyNameSpell, 
+              givenName = name.Value.GivenName,
+              givenNameSpell = name.Value.GivenNameSpell,
+              gender = name.Value.IsGivenNameForMales ? Genders.Male : Genders.Female
+            } : null,
           new PersonMocker.Options
           {
             FamilyNamePrefix = subset.FamilyNamePrefix,
@@ -39,6 +54,7 @@ internal abstract class PeopleCollectionsMocker
     internal required uint Quantity { get; init; }
     internal required DataMocking.NullablePropertiesDecisionStrategies NullablePropertiesDecisionStrategy { get; init; }
     internal string? FamilyNamePrefix { get; init; }
+    internal PersonNameData[]? WithNames { get; init; }
   }
   
 }

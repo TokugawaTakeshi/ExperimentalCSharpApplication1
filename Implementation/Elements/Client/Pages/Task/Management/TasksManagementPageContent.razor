@@ -1,21 +1,41 @@
 ﻿@page "/"
 
 
-@using Client.Components.SharedReusable.Managers.TasksGroupsTree
-@using Client.Components.SharedReusable.Managers.Tasks
-@using Client.Components.SharedReusable.Managers.Task
+@using Client.SharedComponents.Controls.TasksFilteringPanel;
+@using Client.SharedComponents.Viewers.Tasks
+@using Client.SharedComponents.Managers.Task
+
+@using Microsoft.AspNetCore.Components.Sections
+@using Client.Pages.Task.Management.ModalDialogs
+@using FrontEndFramework.Components.ModalDialogs.Common
 
 
 <div class="TasksManagementPage-SpecificContent MainLayout-SpecificContentFillingElement">
 
-	<TasksGroupsTreeManager spaceSeparatedAdditionalCSS_Classes="TasksManagementPage-TasksGroupsThreeManager" />
-
-  <TasksManager spaceSeparatedAdditionalCSS_Classes="TasksManagementPage-TasksManager" />
+	<TasksViewer 
+		rootElementModifierCSS_Class="TasksManagementPage-TasksViewer"
+		onClickTaskAddingButtonEventHandler=@onClickStartingOfNewTaskInputtingButton
+	/>
   
 	<TaskManager 
-		spaceSeparatedAdditionalCSS_Classes="TasksManagementPage-TaskManager"
-		activationGuidance=@taskManagerActivationGuidance
-		targetTask="@activeTask"
+		rootElementModifierCSS_Class=@($"TasksManagementPage-TaskManager { taskManagerAdditionalCSS_Class }")
+		activationGuidance=@localization.taskManagerActivationGuidance
+		targetTask=@activeTask
+		onInputtingDataOfNewTaskCompleteEventHandler=@onNewTaskInputtingCompleted
+		onExistingTaskEditingCompleteEventHandler=@onExistingTaskEditingCompleted
+		onDeleteTaskEventHandler=@onDeleteTask
+		@ref=@taskManager
 	/>
-
+	
 </div>
+
+<SectionContent SectionName="FloatingAndFixedContent">
+	
+	<ModalDialog
+		title=@localization.filteringModalDialog.title
+		onInitializedEventCallback=@TasksFilteringModalDialogService.initialize
+	>
+		<TasksFilteringPanel />
+	</ModalDialog>
+	
+</SectionContent>

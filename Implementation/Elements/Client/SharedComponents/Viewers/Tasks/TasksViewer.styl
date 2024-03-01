@@ -1,0 +1,156 @@
+﻿.TasksViewer
+
+  WIDE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH = 740px
+
+  WideContainersConfiguration()
+    @media container and (min-width: WIDE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH)
+      {block}
+
+  NarrowContainersConfiguration()
+    @media container and (max-width: WIDE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH - 1)
+      {block}
+  
+
+  container-type inline-size
+
+  
+  &-VariableComposition
+  
+    height 100%
+    
+    
+    +WideContainersConfiguration()
+  
+      display grid
+      grid-template-areas "SIDEBAR TOP_ACTION_BAR" "SIDEBAR MAIN_SECTION"
+      grid-template-columns 200px minmax(0, 1fr)
+      grid-template-rows auto 1fr
+      row-gap 6px
+      column-gap 12px
+  
+    
+    +NarrowContainersConfiguration()
+    
+      display flex
+      flex-direction column
+      overflow hidden
+  
+  
+  &-Sidebar
+
+    +WideContainersConfiguration()
+    
+      grid-area SIDEBAR
+    
+    
+    +NarrowContainersConfiguration()
+    
+      display none
+    
+    
+  &-TopActionBar
+
+    display flex
+    align-items center
+    
+    
+    +WideContainersConfiguration()
+
+      grid-area TOP_ACTION_BAR
+      column-gap 8px
+
+
+    +NarrowContainersConfiguration()
+
+      flex-shrink 0
+    
+    
+    &-SearchBox
+
+      flex-grow 1
+      
+
+    &-ButtonForWideContainers
+
+      +WideContainersConfiguration()
+
+        flex-shrink 0
+
+
+      +NarrowContainersConfiguration()
+
+        display none !important
+    
+    
+  &-CardsFlow
+
+    VERTICAL_SPACING_AFTER_TOP_ACTION_BAR = 6px
+    
+    display grid
+    grid-template-columns repeat(auto-fit, minmax(280px, 1fr))
+    row-gap 12px
+    align-content start
+    
+    overflow-y auto
+    
+    margin-top: "calc(%s - %s)" % (VERTICAL_SPACING_AFTER_TOP_ACTION_BAR TaskCard.shadowThickness)
+    
+
+    // [ Approach ] `margin-top` already used, while `:before` will be a child of the grid, so both are not available. 
+    provideClippedShadowsAndOutlinesVisibility({
+      requiredHorizontalSymmetricSpace: TaskCard.shadowThickness,
+      requiredVerticalSymmetricSpace: TaskCard.shadowThickness,
+      noCompensatingNegativeTopMargins: true
+    })
+
+
+    +WideContainersConfiguration()
+
+      column-gap 12px
+    
+      grid-area MAIN_SECTION
+    
+    
+    +NarrowContainersConfiguration()
+    
+      flex-grow 1
+
+    
+  &-AdmonitionBlock
+
+    margin-top 24px
+    margin-bottom 36px
+
+
+    +WideContainersConfiguration()
+
+      grid-area MAIN_SECTION
+      align-self start
+
+      overflow-y auto
+    
+
+    +NarrowContainersConfiguration()
+
+      centerHorizontallyWithoutWrapper({ 
+        targetElementType: HorizontalCenteringWithoutWrapper.TargetElementTypes.block,
+        maximalWidth: 2*NARROWEST_SCREEN_WIDTH_UNIT,
+        horizontalSpaceBetweenSelfAndParent: 20px 
+      })
+
+
+  &-BottomActionBarForNarrowContainers
+
+    +WideContainersConfiguration()
+
+      display none
+
+
+    +NarrowContainersConfiguration()
+
+      display flex
+      flex-direction row-reverse
+      justify-content space-between
+
+      flex-grow 0
+      margin-top 6px

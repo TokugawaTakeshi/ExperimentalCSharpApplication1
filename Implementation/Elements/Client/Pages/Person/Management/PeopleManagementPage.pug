@@ -1,6 +1,24 @@
 extends ../../../Layouts/Main/MainLayout.pug
 
 
+block append Requirements
+
+  include ../../../StaticPreview/_Requirements.pug
+
+  -
+
+    class PeopleManagementPage {
+
+      static mustDisplayPersonManagerAtNarrowScreens = false;
+
+      static displayPersonManagerAtNarrowScreens() {
+        PeopleManagementPage.mustDisplayPersonManagerAtNarrowScreens = true;
+        return PeopleManagementPage;
+      }
+
+    }
+    
+
 block append Metadata
 
   -
@@ -8,46 +26,28 @@ block append Metadata
     HTML_PAGE_LANGUAGE = "ja";
     HTML_PAGE_TITLE = "人管理 ｜ やまとダイワ几帳面さ";
 
-    styleSheetsURIs = [ "@All/Main", "@All/ExternalComponents" ];
-
-
-block append Requirements
-
-  include ../../../Components/Components.pug
-
+    styleSheetsURIs = [ "@All/Primer", "@All/ExternalComponents", "@All/Internals" ];
+    
 
 block append SpecificContent
 
   .PeopleManagementPage-SpecificContent.MainLayout-SpecificContentFillingElement
 
-    +PeopleManager({
+    +PeopleViewer({
       loading: PeopleManagementPageStatesSimulations.loading,
       error: PeopleManagementPageStatesSimulations.error,
       noItems: PeopleManagementPageStatesSimulations.noItems,
       noSearchResults: PeopleManagementPageStatesSimulations.noSearchResults
-    }).PeopleManagementPage-PeopleManager
+    }).PeopleManagementPage-PeopleViewer
 
     +PersonManager(
       {
-        targetPerson: DummyData.People[0],
+        targetPerson: getRandomArrayElement(DummyData.People),
         activationGuidance: "人の詳細を閲覧する事や編集するにはカードをクリック・タップして下さい。"
       },
       { editingMode: true }
-    ).PeopleManagementPage-PersonManager
-
-    +ModalDialog--YDF(
-      {
-        title: "人を編集"
-      },
-      {
-        mustDisplay: false
-      }
-    )
-
-      +PersonManager(
-        {
-          targetPerson: DummyData.People[0],
-          activationGuidance: "人の詳細を閲覧する事や編集するにはカードをクリック・タップして下さい。"
-        },
-        { editingMode: true }
-      )
+    ).PeopleManagementPage-PersonManager&attributes({
+      class: PeopleManagementPage.mustDisplayPersonManagerAtNarrowScreens ? 
+          [ "PeopleManagementPage-PersonManager__VisibleAtNarrowScreens" ] : 
+          [ "PeopleManagementPage-PersonManager__HiddenAtNarrowScreens" ]
+    })

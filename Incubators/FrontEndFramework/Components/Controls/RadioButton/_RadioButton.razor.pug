@@ -1,0 +1,18 @@
+﻿.RadioButton--YDF(
+  class="@rootElementModifierSpaceSeparatedCSS_Classes @spaceSeparatedAdditionalCSS_Classes"
+)
+
+  span.RadioButton--YDF-Ring
+  
+  label.RadioButton--YDF-Label(
+    for="@INPUT_ELEMENT_HTML_ID"
+  ) @(label)
+  
+  input.RadioButton--YDF-HiddenInputElement(
+    type="radio"
+    name="@HTML_Name"
+    value="@HTML_Value"
+    disabled="@disabled"
+    readonly="@readonly"
+    id="INPUT_ELEMENT_HTML_ID"
+  )

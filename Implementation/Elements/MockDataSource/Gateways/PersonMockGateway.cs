@@ -1,9 +1,6 @@
 ﻿using Person = CommonSolution.Entities.Person;
 using CommonSolution.Gateways;
-
-using MockDataSource.Utils;
-
-using Utils.Pagination;
+using YamatoDaiwa.CSharpExtensions.DataMocking;
 
 
 namespace MockDataSource.Gateways;
@@ -13,13 +10,16 @@ public class PersonMockGateway : IPersonGateway
 {
 
   private readonly MockDataSource mockDataSource = MockDataSource.GetInstance();
+  
+  /* 【 用途 】 手動変更専用 */
+  private static readonly bool NO_ITEMS_SIMULATION_MODE = false;
 
 
   public Task<Person[]> RetrieveAll()
   {
     return MockGatewayHelper.SimulateDataRetrieving<object, Person[]>(
       requestParameters: null,
-      getResponseData: mockDataSource.RetrieveAllPeople,
+      getResponseData: PersonMockGateway.NO_ITEMS_SIMULATION_MODE ? Array.Empty<Person> : mockDataSource.RetrieveAllPeople,
       new MockGatewayHelper.SimulationOptions
       {
         MinimalPendingPeriod__Seconds = 2,
@@ -32,33 +32,51 @@ public class PersonMockGateway : IPersonGateway
   }
 
   public Task<IPersonGateway.SelectionRetrieving.ResponseData> RetrieveSelection(
-    IPersonGateway.SelectionRetrieving.RequestParameters requestParameters
+    IPersonGateway.SelectionRetrieving.RequestParameters? requestParameters
   )
   {
+
+    string? searchingByFullOrPartialNameOrItsSpell = requestParameters?.SearchingByFullOrPartialNameOrItsSpell; 
+    
     return MockGatewayHelper.SimulateDataRetrieving(
       requestParameters,
       getResponseData: () => {
 
-        Person[] filteredPeople;
-
-        if (!String.IsNullOrEmpty(requestParameters.SearchingByFullOrPartialName))
+        if (PersonMockGateway.NO_ITEMS_SIMULATION_MODE)
         {
-          filteredPeople = mockDataSource.People.Where(
-            person => person.FamilyName.Contains(requestParameters.SearchingByFullOrPartialName)
-          ).ToArray();
+          return new IPersonGateway.SelectionRetrieving.ResponseData
+          {
+            Items = Array.Empty<Person>(),
+            TotalItemsCountInSelection = 0,
+            TotalItemsCount = 0
+          }; 
+        }
+        
+        
+        Person[] filteredPeople;
+        
+        if (!String.IsNullOrEmpty(searchingByFullOrPartialNameOrItsSpell))
+        {
+
+          filteredPeople = mockDataSource.People.
+              Where(
+                person => 
+                    person.familyName.Contains(searchingByFullOrPartialNameOrItsSpell) ||
+                    (person.givenName?.Contains(searchingByFullOrPartialNameOrItsSpell) ?? false) ||
+                    (person.familyNameSpell?.Contains(searchingByFullOrPartialNameOrItsSpell) ?? false) ||
+                    (person.givenNameSpell?.Contains(searchingByFullOrPartialNameOrItsSpell) ?? false)
+              ).
+              ToArray();
+
         }
         else
         {
           filteredPeople = mockDataSource.People.ToArray();
         }
 
-        Person[] itemsOfTargetPaginationPage = new PaginationCollection<Person>(
-          filteredPeople, requestParameters.ItemsCountPerPaginationPage
-        ).GetItemsArrayOfPageWithNumber(requestParameters.PaginationPageNumber);
-
         return new IPersonGateway.SelectionRetrieving.ResponseData
         {
-          ItemsOfTargetPaginationPage = itemsOfTargetPaginationPage,
+          Items = filteredPeople,
           TotalItemsCountInSelection = Convert.ToUInt32(filteredPeople.Length),
           TotalItemsCount = Convert.ToUInt32(mockDataSource.People.Count)
         };
@@ -116,7 +134,11 @@ public class PersonMockGateway : IPersonGateway
   {
     return MockGatewayHelper.SimulateDataSubmitting<string, object>(
       targetPersonID,
-      getResponseData: () => null,
+      getResponseData: () =>
+      {
+        this.mockDataSource.DeleteTask(targetPersonID);
+        return null;
+      },
       new MockGatewayHelper.SimulationOptions
       {
         MinimalPendingPeriod__Seconds = 1,

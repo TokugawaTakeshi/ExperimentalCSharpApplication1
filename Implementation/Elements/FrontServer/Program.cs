@@ -1,5 +1,6 @@
 using FrontServer;
 using MockDataSource.Gateways;
+using YamatoDaiwa.CSharpExtensions.DataMocking;
 
 
 FrontServerDependencies.Injector.SetDependencies(
@@ -13,16 +14,19 @@ FrontServerDependencies.Injector.SetDependencies(
   }
 );
 
+MockGatewayHelper.SetLogger(Console.WriteLine);
 
 WebApplicationBuilder webApplicationBuilder = WebApplication.CreateBuilder(args);
 
+
 webApplicationBuilder.Services.
     AddControllers().
-    AddNewtonsoftJson();
+    AddJsonOptions(
+      (Microsoft.AspNetCore.Mvc.JsonOptions options) => options.JsonSerializerOptions.PropertyNamingPolicy = null
+    );
+
 
 WebApplication webApplication = webApplicationBuilder.Build();
-
-webApplication.MapGet("/", () => "Dummy top page");
 
 webApplication.MapControllers();
 

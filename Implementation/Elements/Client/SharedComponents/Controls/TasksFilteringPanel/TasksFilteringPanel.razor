@@ -1,0 +1,49 @@
+@using FrontEndFramework.SVG_Icons.Lists
+@using FrontEndFramework.SVG_Icons.Calendar
+
+
+<div class="TasksFilteringPanel @rootElementModifierCSS_Class">
+  
+  <div class="TasksFilteringPanel-Title">@(localization.titles.summary)</div>
+  
+  <ul class="TasksFilteringPanel-List">
+    
+    <li class="TasksFilteringPanel-List-Item">
+      <button 
+        class=@($"TasksFilteringPanel-List-Item-Button { retrievingOfAllTasksButtonAdditionalCSS_Classes }")
+        type="button"
+        disabled=@isDisabled
+        @onclick=@retrieveAllTasks
+      >
+        <ChecklistIcon rootElementModifierCSS_Class="TasksFilteringPanel-List-Item-Icon"/>
+        <span class="TasksFilteringPanel-List-Item-Label">@(localization.summaryCategories.all)</span> 
+      </button>
+    </li>
+    
+    <li class="TasksFilteringPanel-List-Item">
+      <button 
+        class=@($"TasksFilteringPanel-List-Item-Button { retrievingOfTasksAssociatedWithDateButtonAdditionalCSS_Classes }")
+        type="button"
+        disabled=@isDisabled
+        @onclick=@retrieveTasksWithAssociatedDateTime
+      >
+        <CalendarIcon__Date rootElementModifierCSS_Class="TasksFilteringPanel-List-Item-Icon"/>
+        <span class="TasksFilteringPanel-List-Item-Label">@(localization.summaryCategories.associatedWithDateAndTime)</span>
+      </button>
+    </li>
+    
+    <li class="TasksFilteringPanel-List-Item">
+      <button 
+        class=@($"TasksFilteringPanel-List-Item-Button { retrievingOfTasksAssociatedWithDateTimeButtonAdditionalCSS_Classes }")
+        type="button"
+        disabled=@isDisabled
+        @onclick=@retrieveTasksWithAssociatedDate
+      >
+        <CalendarIcon__Time rootElementModifierCSS_Class="TasksFilteringPanel-List-Item-Icon" />
+        <span class="TasksFilteringPanel-List-Item-Label">@(localization.summaryCategories.associatedWithDate)</span>
+      </button>
+    </li>
+    
+  </ul>
+  
+</div>

@@ -36,6 +36,13 @@
 
     grid-area UPPER_FIXED_CONTENT_SLOT
 
+    
+  &-HamburgerMenuButton
+
+    +WideScreensConfiguration()
+    
+      visibility hidden
+
 
   &-Sidebar
 
@@ -51,6 +58,8 @@
 
   &-SpecificContent
 
+    container-type size
+    
     overflow-y hidden
 
 
@@ -67,16 +76,29 @@
     bottom 0
     left 0
     right 0
-    z-index: ZIndexes.drawers
+    z-index: YDF_Configuration.zIndexes.drawers
 
     background rgba(black, 0.25)
 
+    transition opacity 0.5s ease-in
+    
 
   &-Drawer
 
     max-width NARROWEST_SCREEN_WIDTH_UNIT
-    width 90%
+    width 80%
     height 100%
 
     background ShadesOfGray__39ColorsW3C_Palette[8]
     box-shadow 0 4px 8px 4px rgba(black, 0.25)
+    
+    //transform translateX(-100%)
+
+    
+  &-ClosingDrawerButton
+    
+    position fixed
+    top 10px
+    right 10px
+
+    z-index: YDF_Configuration.zIndexes.drawers + 1

@@ -1,55 +1,66 @@
 extends ../../../Layouts/Main/MainLayout.pug
 
 
+block append Requirements
+
+  include ../../../StaticPreview/_Requirements.pug
+
+  -
+
+    class TasksManagementPage {
+
+      static mustDisplayTaskManagerAtNarrowScreens = true;
+
+      static displayTaskManagerAtNarrowScreens() {
+        TasksManagementPage.mustDisplayTaskManagerAtNarrowScreens = true;
+        return PeopleManagementPage;
+      }
+
+    }
+    
+
 block append Metadata
 
   -
 
     HTML_PAGE_LANGUAGE = "ja";
-    HTML_PAGE_TITLE = "課題管理 ｜ やまとダイワ几帳面さ";
+    HTML_PAGE_TITLE = "Tasks management — Yamato Diawa Punctuality";
 
-    styleSheetsURIs = [ "@All/Main", "@All/ExternalComponents" ];
-
-
-block append Requirements
-
-  include ../../../Components/Components.pug
+    styleSheetsURIs = [ "@All/Primer", "@All/ExternalComponents", "@All/Internals" ];
 
 
 block append SpecificContent
 
   .TasksManagementPage-SpecificContent.MainLayout-SpecificContentFillingElement
 
-    +TasksGroupsTreeManager.TasksManagementPage-TasksGroupsThreeManager
-
-    +TasksManager({
+    +TasksViewer({
       loading: TasksManagementPageStatesSimulations.loading,
       error: TasksManagementPageStatesSimulations.error,
       noItems: TasksManagementPageStatesSimulations.noItems,
       noSearchResults: TasksManagementPageStatesSimulations.noSearchResults
-    }).TasksManagementPage-TasksManager
+    }).TasksManagementPage-TasksViewer
     
     +TaskManager(
       {
-        targetTask: DummyData.Tasks[0],
-        activationGuidance: "課題の詳細を閲覧する事や編集するにはカードをクリック・タップして下さい。"
+        targetTask: getRandomArrayElement(DummyData.Tasks),
+        activationGuidance: "Click or tap the task card to view details or edit the dedicated task."
       },
       { editingMode: true }
-    ).TasksManagementPage-TaskManager
+    ).TasksManagementPage-TaskManager&attributes({
+      class: TasksManagementPage.mustDisplayTaskManagerAtNarrowScreens ?
+          [ "TasksManagementPage-TaskManager__VisibleAtNarrowScreens" ] : 
+          [ "TasksManagementPage-TaskManager__HiddenAtNarrowScreens" ]
+    })
 
-    +ModalDialog--YDF(
-      {
-        title: "課題を編集"
-      },
-      {
-        mustDisplay: false
-      }
-    )
+    
+block FloatingAndFixedContent
 
-      +TaskManager(
-        {
-          targetTask: DummyData.Tasks[0],
-          activationGuidance: "課題の詳細を閲覧する事や編集するにはカードをクリック・タップして下さい。"
-        },
-        { editingMode: true }
-      )
+  //- 
+    [ Theory ] Because of container queries brakes the fixed positioning, the modal dialog could not be placed inside 
+      the "SpecificContent" block.
+      https://stackoverflow.com/a/52937920/4818123
+     
+  +ModalDialog--YDF(
+    { title: "Filter Tasks" },
+    { mustDisplay: false }
+  ): +TasksFilteringPanel

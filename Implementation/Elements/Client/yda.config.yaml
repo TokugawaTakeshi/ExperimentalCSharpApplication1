@@ -63,6 +63,9 @@ projectBuilding:
       All:
 
         topDirectoryRelativePath: Resources/Styles
+        partialsRecognition:
+          excludeSubdirectoriesWithPrefixes: "_"
+          excludeFilesWithPrefixes: "_"
 
         buildingModeDependent:
           STATIC_PREVIEW:

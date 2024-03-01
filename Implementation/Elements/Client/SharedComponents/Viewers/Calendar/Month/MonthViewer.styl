@@ -1,0 +1,194 @@
+﻿.MonthViewer
+
+  table-layout fixed
+
+  
+  td:not(:first-child),
+  th:not(:first-child)
+
+    border-left-width 1px
+  
+    border-left-style solid
+    border-left-color: ShadesOfGray__39ColorsW3C_Palette[32]
+
+    
+  tbody
+  
+    tr:not(:last-child)
+    
+      border-top-width 1px
+      
+      border-top-style solid
+      border-top-color: ShadesOfGray__39ColorsW3C_Palette[32]
+
+      
+  &-DayTitleCell
+
+    width percentage(1/7)
+
+    Paddings({
+      verticalSymmetric: 4px,
+      verticalUpwardShifting: 1px
+    })
+    font-size 14px
+
+    text-align center
+    color ShadesOfGray__39ColorsW3C_Palette[8]
+
+
+    &__Holiday
+      
+      color #C65151
+  
+    
+  &-DayCell
+
+    LARGE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH = 100px
+    LARGE_CONTAINERS_CONFIGURATION_MINIMAL_HEIGHT = 100px
+
+    WideContainersConfiguration()
+      @media container and \
+      (min-width: LARGE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH) and\
+      (min-height: LARGE_CONTAINERS_CONFIGURATION_MINIMAL_HEIGHT)
+        {block}
+
+    // TODO YDA上対応が出来たら、「and」を「or」（※構文が違う！）に置き換える。https://stackoverflow.com/a/11404776
+    NarrowContainersConfiguration()
+      @media container and\
+      (max-width: LARGE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH - 1) and\
+      (max-height: LARGE_CONTAINERS_CONFIGURATION_MINIMAL_HEIGHT - 1)
+        {block}
+
+
+    // 【 理論 】 tdには「container-type」を適応しても効果無いので、「container queries」機能を使うには新規包みを追加せざる得ない。
+    &-ContainerQueryProvider
+
+      display flex
+      flex-direction column
+
+      // 【 理論 】 「container-type: size」は高さの自動調節を崩し、「container queries」機能有効かするには相対単位でも良いが、明示的に高さを指定する必要がある。
+      container-type size
+      height 100%
+
+
+    &-Title
+
+      font-size 14px
+      text-align center
+
+      font-weight bold
+      color: ShadesOfGray__39ColorsW3C_Palette[16]
+
+      flex-shrink 0
+  
+  
+    &-ScrollViewForLargeContainers
+
+      overflow-y auto
+      
+      flex-shrink 1
+
+
+      +NarrowContainersConfiguration()
+
+        display none
+
+
+      &-Title
+
+        applyTextGeometryWithoutExtraSpaceCausedByLineHeight({
+          fontSize: 14px,
+          lineSpacing: 4px,
+          mustAllowWordsBreakingAnywhere: true
+        })
+
+        font-weight bold
+        color: ShadesOfGray__39ColorsW3C_Palette[16]
+
+
+      &-List
+
+        margin-top 6px
+
+        
+        &-Item
+
+          display flex
+          align-items center
+          column-gap 4px
+          
+          retireFromElementWithSameSelector({ y: 4px })
+          
+
+        &-IconDecorativeWrapper
+          
+          border-radius 50%
+          padding 6px
+          
+          flex-shrink 0
+          
+          /.MonthViewer-DayCell-ScrollViewForLargeContainers-List__ActionAssociatedWithSpecificTime &
+
+            background-color: YDF_ColorPalette.red.light
+            
+          
+          /.MonthViewer-DayCell-ScrollViewForLargeContainers-List__ActionAssociatedWithSpecificDate &
+
+            background-color: YDF_ColorPalette.deepYellow.light
+            
+            
+          /.MonthViewer-DayCell-ScrollViewForLargeContainers-List__DocumentsAssociatedWithSpecificTime &
+
+            background-color: YDF_ColorPalette.mint.light
+          
+          
+        &-Icon
+
+          display block // [ Theory ] Removing of extra space below self
+          
+          width 16px
+          height 16px
+          
+          fill: ShadesOfGray__39ColorsW3C_Palette[16]
+          
+          
+        &-Label
+
+          applyTextGeometryWithoutExtraSpaceCausedByLineHeight({
+            fontSize: 14px,
+            lineSpacing: 4px,
+            mustAllowWordsBreakingAnywhere: true
+          })
+
+
+//
+  //
+  //  &-ButtonForSmallContainers
+  //
+  //    ButtonLikeElementsPrimer()
+  //
+  //    display flex
+  //    flex-wrap wrap
+  //    row-gap 2px
+  //    column-gap 4px
+  //    justify-content center
+  //
+  //    Paddings({
+  //      verticalSymmetric: 4px,
+  //      verticalUpwardShifting: 1px
+  //    })
+  //
+  //    flex-grow 1
+  //
+  //
+  //    +WideContainersConfiguration()
+  //
+  //      display none
+  //
+  //
+  //    &-Icon
+  //
+  //      width 16px
+  //      height 16px
+  //
+  //      fill: ShadesOfGray__39ColorsW3C_Palette[16]

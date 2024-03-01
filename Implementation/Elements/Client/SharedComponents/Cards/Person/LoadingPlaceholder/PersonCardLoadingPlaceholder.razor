@@ -1,0 +1,27 @@
+﻿<div class="PersonCard PersonCard__LoadingPlaceholder @rootElementModifierCSS_Class">
+  
+  <div class="PersonCard-Avatar PersonCard-Avatar__LoadingPlaceholder"></div>
+  
+  <div class="PersonCard-Metadata">
+    
+    <div class="PersonCard-Metadata-Value--LoadingPlaceholder-OfficialName"></div>
+    
+    <div class="PersonCard-Metadata-Value--LoadingPlaceholder-OfficialNameSpell"></div>
+    
+    <div class="PersonCard-Metadata-Key--LoadingPlaceholder PersonCard-Metadata-Key--LoadingPlaceholder__Email"></div>
+    <div class="PersonCard-Metadata-Value--LoadingPlaceholder-Email"></div>
+    
+    <div class="PersonCard-Metadata-Key--LoadingPlaceholder PersonCard-Metadata-Key--LoadingPlaceholder__Phone"></div>
+    <div class="PersonCard-Metadata-Value--LoadingPlaceholder-Phone"></div>
+    
+  </div>
+  
+</div>
+
+
+@code {
+
+  [Microsoft.AspNetCore.Components.Parameter] 
+  public string? rootElementModifierCSS_Class { get; set; }
+
+}

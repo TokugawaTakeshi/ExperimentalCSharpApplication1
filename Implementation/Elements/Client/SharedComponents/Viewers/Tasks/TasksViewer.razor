@@ -1,0 +1,157 @@
+﻿@using Task = CommonSolution.Entities.Task
+
+@using Client.SharedState
+
+@using Client.SharedComponents.Cards.Task.LoadingPlaceholder
+@using Client.SharedComponents.Cards.Task
+
+@using Client.SharedComponents.Controls.TasksFilteringPanel
+
+@using YamatoDaiwa.Frontend.Components.AdmonitionBlock
+@using FrontEndFramework.Components.Controls.Buttons.Plain
+@using FrontEndFramework.Components.Controls.SearchBox
+
+@using FrontEndFramework.SVG_Icons.Checklist
+@using FrontEndFramework.SVG_Icons.Person
+@using FrontEndFramework.SVG_Icons.Filtering
+
+
+<div class="TasksViewer @rootElementModifierCSS_Class">
+
+  @* [ Extra container adding reason ] Usage of container queries *@
+  <div class="TasksViewer-VariableComposition">
+    
+    <TasksFilteringPanel rootElementModifierCSS_Class="TasksViewer-Sidebar"/>
+    
+    <div class="TasksViewer-TopActionBar">
+      
+      <SearchBox
+        placeholder=@localization.searchBox.placeholder
+        accessibilityGuidance=@localization.searchBox.accessibilityGuidance
+        mustSynchronizeDisplayingSearchRequestWith=@TasksSharedState.searchingByFullOrPartialTitleOrDescription
+        onNewSearchRequest=@onNewTaskSearchingByFullOrPartialTitleOrDescriptionRequestHasBeenEmitted
+        disabled=@mustDisableSearchBox
+        spaceSeparatedAdditionalCSS_Classes="TasksViewer-TopActionBar-SearchBox"
+      />
+      
+      <Button
+        label=@localization.buttons.taskAdding.label
+        onClick=@onClickTaskAddingButton
+        spaceSeparatedAdditionalCSS_Classes="TasksViewer-TopActionBar-ButtonForWideContainers"
+      >
+        <PrependedSVG_Icon>
+          <ChecklistIcon__Adding rootElementModifierCSS_Class="Button--YDF-SVG_Icon" />  
+        </PrependedSVG_Icon>
+      </Button>
+      
+    </div>
+
+    @if (TasksSharedState.isTasksRetrievingInProgressOrNotStartedYet)
+    {
+      <div class="TasksViewer-CardsFlow">
+        @for (uint cardNumber = 0; cardNumber < LOADING_PLACEHOLDER_CARDS_COUNT; cardNumber++)
+        {
+          <TaskCardLoadingPlaceholder/>  
+        }
+      </div> 
+    }
+    
+    else if (TasksSharedState.hasTasksSelectionRetrievingErrorOccurred)
+    {
+      <AdmonitionBlock
+        title=@localization.errors.tasksRetrieving.title
+        decoration=@AdmonitionBlock.StandardDecorativeVariations.error
+        hasPrependedSVG_Icon
+        rootElementModifierCSS_Class="TasksViewer-AdmonitionBlock"
+      >
+
+        <p>@( localization.errors.tasksRetrieving.description )</p>
+        
+        <Button
+          label=@localization.buttons.retryingOfDataRetrieving.label
+          onClick=@onClickTasksSelectionRetrievingRetryingButton
+          spaceSeparatedAdditionalCSS_Classes="AdmonitionBlock--YDF-CenteredButton"
+        />
+        
+      </AdmonitionBlock>
+    }
+    
+    else if (TasksSharedState.totalTasksCountInDataSource == 0)
+    {
+      <AdmonitionBlock
+        decoration=@AdmonitionBlock.StandardDecorativeVariations.guidance
+        hasPrependedSVG_Icon
+        rootElementModifierCSS_Class="TasksViewer-AdmonitionBlock"
+      >
+
+        <p>@(localization.guidances.noItemsAvailable)</p>
+        
+        <Button
+          label=@localization.buttons.immediateAddingOfFirstTask.label
+          onClick=@onClickTaskAddingButton
+          
+          spaceSeparatedAdditionalCSS_Classes="AdmonitionBlock--YDF-CenteredButton"
+        />
+        
+      </AdmonitionBlock>
+    }
+    
+    else if (TasksSharedState.totalTasksCountInSelection == 0)
+    {
+      <AdmonitionBlock
+        decoration=@AdmonitionBlock.StandardDecorativeVariations.guidance
+        hasPrependedSVG_Icon
+        rootElementModifierCSS_Class="TasksViewer-AdmonitionBlock"
+      >
+
+        <p>@(localization.guidances.noItemsFound)</p>
+        
+        <Button
+          label=@localization.buttons.resettingOfFiltering.label
+          onClick=@onClickTasksFilteringResettingButton
+          spaceSeparatedAdditionalCSS_Classes="AdmonitionBlock--YDF-CenteredButton"
+        />
+        
+      </AdmonitionBlock>
+    }
+
+    else
+    {
+      <ul class="TasksViewer-CardsFlow">
+        @foreach (Task task in TasksSharedState.tasksSelection)
+        {
+          <TaskCard
+            targetTask=@task
+            rootElementTag="li"
+            onClickRootElementEventHandler=@onSelectTask
+            onClickCheckboxEventHandler=@onToggleTaskCompletion
+          />    
+        }
+      </ul> 
+    }
+    
+    <div class="TasksViewer-BottomActionBarForNarrowContainers">
+      
+      <Button
+        label=@localization.buttons.taskAdding.label
+        onClick=@onClickTaskAddingButton
+      >
+        <PrependedSVG_Icon>
+          <ChecklistIcon__Adding rootElementModifierCSS_Class="Button--YDF-SVG_Icon" />  
+        </PrependedSVG_Icon>
+      </Button>
+
+      <Button
+        label="Filtering"
+        onClick=@openTasksFilteringModalDialog
+      >
+        <PrependedSVG_Icon>
+          <FilteringIcon__Outlined rootElementModifierCSS_Class="Button--YDF-SVG_Icon" />  
+        </PrependedSVG_Icon>
+      </Button>
+      
+    </div>
+  
+  </div>
+
+</div>

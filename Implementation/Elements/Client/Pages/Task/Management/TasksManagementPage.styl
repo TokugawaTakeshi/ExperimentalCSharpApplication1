@@ -1,77 +1,67 @@
 .TasksManagementPage
 
-  MAXIMAL_CONTENT_WIDTH = 920px
-  MINIMAL_SIDE_SYMMETRIC_PADDINGS__WIDE_SCREENS = 20px
+  WIDE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH = 700px
 
-  wideScreensConfigurationMinimalWidth = MAXIMAL_CONTENT_WIDTH + 2*MINIMAL_SIDE_SYMMETRIC_PADDINGS__WIDE_SCREENS
-  MEDIUM_SCREENS_CONFIGURATION_MINIMAL_WIDTH = 420px
-
-
-  WideScreensConfiguration()
-    @media (min-width: wideScreensConfigurationMinimalWidth)
+  WideContainersConfiguration()
+    @media container and (min-width: WIDE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH)
       {block}
 
-  MediumScreensConfiguration()
-    @media (min-width: MEDIUM_SCREENS_CONFIGURATION_MINIMAL_WIDTH) and (max-width: wideScreensConfigurationMinimalWidth - 1)
-      {block}
-
-  NarrowScreensConfiguration()
-    @media (max-width: MEDIUM_SCREENS_CONFIGURATION_MINIMAL_WIDTH - 1)
-      {block}
-
-  WideAndMediumScreensConfiguration()
-    @media (min-width: MEDIUM_SCREENS_CONFIGURATION_MINIMAL_WIDTH)
-      {block}
-
-  MediumAndNarrowScreensConfiguration()
-    @media (max-width: wideScreensConfigurationMinimalWidth - 1)
+  NarrowContainersConfiguration()
+    @media container and (max-width: WIDE_CONTAINERS_CONFIGURATION_MINIMAL_WIDTH - 1)
       {block}
 
 
   &-SpecificContent
 
-    display flex
-    border-color: ShadesOfGray__39ColorsW3C_Palette[24]
+    +WideContainersConfiguration()
+
+      display grid
+      grid-template-columns minmax(0, 1fr) NARROWEST_SCREEN_WIDTH_UNIT
 
 
-  &-TasksGroupsThreeManager
+    +NarrowContainersConfiguration()
 
-    min-width 200px
-    padding 4px 12px
-
-    resize horizontal
-    overflow auto
+      position relative
 
 
-    +NarrowScreensConfiguration()
+  &-TasksViewer
 
-      display none
+    height 100% //** [ Theory ] `max-height 100%` will not work, but `height 100%` will. */
+    
+    padding 8px
 
-
-  &-TasksManager
-
-    border-left-width 1px
-    padding 6px 8px
-
-    border-style solid
-    border-color: ShadesOfGray__39ColorsW3C_Palette[24]
-
-    flex-grow 1
+    overflow-y hidden //**　[ Theory ]　In this case, it only limits the maximal height */ 
 
 
   &-TaskManager
 
-    min-width NARROWEST_SCREEN_WIDTH_UNIT
-    max-width 2*NARROWEST_SCREEN_WIDTH_UNIT    
-    border-left-width 1px
-    padding 6px 8px
+    max-height 100%
+    padding 8px
 
-    border-style solid
-    border-color: ShadesOfGray__39ColorsW3C_Palette[24]
+    overflow-y hidden //**　[ Theory ]　In this case, it only limits the maximal height */
 
-    flex 0 0 auto
+    
+    +WideContainersConfiguration()
+    
+      TaskManager-HiddenButtonForNarrowScreens()
 
 
-    +MediumAndNarrowScreensConfiguration()
+    &__VisibleAtNarrowScreens
 
-      display none
+      +NarrowContainersConfiguration()
+
+        width 100%
+        height 100%
+
+        background-color white
+
+        position absolute
+        top 0
+        z-index: YDF_Configuration.zIndexes.floatingBelowModalsComponents
+
+
+    &__HiddenAtNarrowScreens
+
+      +NarrowContainersConfiguration()
+
+        display none

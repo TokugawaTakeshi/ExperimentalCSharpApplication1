@@ -1,0 +1,43 @@
+﻿@using FrontEndFramework.SVG_Icons.ExclamationMark;
+@using FrontEndFramework.SVG_Icons.InfoSign;
+@using FrontEndFramework.SVG_Icons.Checkmark;
+@using FrontEndFramework.SVG_Icons.MultiplicationSign;
+
+
+@if (SnackbarService.isSnackbarDisplaying)
+{
+
+  <div 
+    class="Snackbar--YDF @rootElementModifierCSS_Classes"
+    role="status"
+    aria-live="polite"  
+  >
+    
+    @if (SnackbarService.decoration == StandardDecorativeVariations.error.ToString())
+    {
+      <ExclamationMarkIcon__Circled__Filled rootElementModifierCSS_Class="Snackbar--YDF-Icon" />  
+    } else if (SnackbarService.decoration == StandardDecorativeVariations.warning.ToString())
+    {
+      <ExclamationMarkIcon__Triangled__Filled rootElementModifierCSS_Class="Snackbar--YDF-Icon"/>  
+    } else if (SnackbarService.decoration == StandardDecorativeVariations.info.ToString())
+    {
+      <InfoSignIcon__Circled__Filled rootElementModifierCSS_Class="Snackbar--YDF-Icon" /> 
+    } else if (SnackbarService.decoration == StandardDecorativeVariations.success.ToString())
+    {
+      <CheckmarkIcon__Circled__Filled rootElementModifierCSS_Class="Snackbar--YDF-Icon" />   
+    }
+
+    <p class="Snackbar--YDF-Message">@SnackbarService.message</p>
+    
+    <button
+      class="Snackbar--YDF-DismissingButton"
+      type="button"
+      aria-label="Hide this message"
+      @onclick=@SnackbarService.hideSnackbar
+    >
+      <MultiplicationSignIcon__Octagoned__Filled rootElementModifierCSS_Class="Snackbar--YDF-DismissingButton-Icon" />  
+    </button>
+
+  </div>
+  
+}
